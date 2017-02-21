@@ -79,17 +79,6 @@ print 'NSE momentum eq residual: ', np.linalg.norm(curnseres)
 resconti = J*nextv - fp
 print 'The conti residual: ', np.linalg.norm(resconti)
 
-try:
-    savedmatsstr = '../data/cylinderwake__mats_N{1}_Re{0}.mat'.\
-        format(Re, N)
-    mats = scipy.io.loadmat(savedmatsstr)
-    vssnse = mats['v_ss_nse']
-    pssnse = mats['p_ss_nse']
-    print 'Difference of v solutions: ', np.linalg.norm(curv - vssnse)
-    print 'Difference of p solutions: ', np.linalg.norm(nextp - pssnse)
-except IOError:
-    print 'No data for Re={0}, N={1}'.format(Re, N)
-
 import visualization_utils as vu
 vu.cylwake_paraview(pvec=nextp, velvec=nextv, strtojson=visujsonstr,
                     pfileprefix='p__', vfileprefix='vel__')
