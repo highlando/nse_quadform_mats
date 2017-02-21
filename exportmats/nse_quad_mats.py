@@ -191,7 +191,7 @@ def comp_exp_nsbili(problemname='drivencavity', N=10, bccontrol=False,
         '(see https://github.com/highlando/dolfin_navier_scipy) at\n' +\
         datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")
     # TODO: this github address is outdated
-    hstr = mddir + problemname + '_N{0}_hmat'.format(N)
+    hstr = mddir + problemname + '_N{0}_hmat'.format(NV)
     if bccontrol:
         hstr = hstr + '__bccontrol'
     try:
