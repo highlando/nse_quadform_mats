@@ -253,9 +253,10 @@ def comp_exp_nsbili(problemname='drivencavity', N=10, bccontrol=False,
     # case as all boundaries will be initialized with zero
     # and nonzero values are applied last
     if visu:
+        fstring = mddir+'visualization_' + problemname + '_N{0}.jsn'.format(N)
         jsn_vslztn_dct(diribcs=femp['diribcs'], V=femp['V'], Q=femp['Q'],
-                       invinds=invinds, N=N,
-                       fstring=mddir+'visualization_cylN{0}.jsn'.format(N))
+                       invinds=invinds, N=N, problemname=problemname,
+                       fstring=fstring)
 
     return
 
@@ -313,7 +314,7 @@ def manual_paraview_data(vvec=None, V=None, invinds=None, diribcs=None,
 
 
 def jsn_vslztn_dct(diribcs=None, V=None, N=None, invinds=None,
-                   fstring=None, Q=None):
+                   fstring=None, Q=None, problemname=None):
     ''' data for writing paraview output
 
     Notes:
@@ -339,8 +340,10 @@ def jsn_vslztn_dct(diribcs=None, V=None, N=None, invinds=None,
     vyvtxdofs = [int(vtxdf) for vtxdf in vyvtxdofs]
     pvtxdofs = [int(ptxdf) for ptxdf in pvtxdofs]
 
-    vtuheader_v = open('vel_vtuheader_cyl_N{0}.txt'.format(N), 'r').read()
-    vtuheader_p = open('p_vtuheader_cyl_N{0}.txt'.format(N), 'r').read()
+    vtuheader_v = open('vel_vtuheader_' + problemname +
+                       '_N{0}.txt'.format(N), 'r').read()
+    vtuheader_p = open('p_vtuheader_' + problemname +
+                       '_N{0}.txt'.format(N), 'r').read()
 
     vtufooter_v = '</DataArray> </PointData> </Piece>' +\
         ' </UnstructuredGrid> </VTKFile>'
@@ -403,14 +406,17 @@ def apply_massinv(M, rhsa, output=None):
 
 if __name__ == '__main__':
     mddir = '../data/'
-    # comp_exp_nsbili(problemname='drivencavity', N=10, mddir=mddir)
-    # comp_exp_nsbili(problemname='drivencavity', N=20, mddir=mddir)
-    # comp_exp_nsbili(problemname='drivencavity', N=30, mddir=mddir)
-    # comp_exp_nsbili(problemname='cylinderwake', N=1, mddir=mddir, Re=80)
-    # comp_exp_nsbili(problemname='cylinderwake', N=1, mddir=mddir, Re=40)
-    # comp_exp_nsbili(problemname='cylinderwake', N=1, mddir=mddir)
-    # comp_exp_nsbili(problemname='cylinderwake', N=3, mddir=mddir)
+    visu = True
+    # comp_exp_nsbili(problemname='drivencavity', N=10, mddir=mddir, visu=visu)
+    # comp_exp_nsbili(problemname='drivencavity', N=20, mddir=mddir, visu=visu)
+    # comp_exp_nsbili(problemname='drivencavity', N=30, mddir=mddir, visu=visu)
+    comp_exp_nsbili(problemname='cylinderwake', N=1, mddir=mddir, Re=80,
+                    visu=visu)
+    comp_exp_nsbili(problemname='cylinderwake', N=1, mddir=mddir, Re=40,
+                    visu=visu)
+    comp_exp_nsbili(problemname='cylinderwake', N=1, mddir=mddir, visu=visu)
+    comp_exp_nsbili(problemname='cylinderwake', N=3, mddir=mddir, visu=visu)
     comp_exp_nsbili(problemname='cylinderwake', N=2,
-                    mddir=mddir, bccontrol=True, palpha=1)
-    # comp_exp_nsbili(problemname='cylinderwake', N=2, Re=40,
-    #                 mddir=mddir, bccontrol=True, palpha=1e-3)
+                    mddir=mddir, bccontrol=True, palpha=1, visu=visu)
+    comp_exp_nsbili(problemname='cylinderwake', N=2, Re=40,
+                    mddir=mddir, bccontrol=True, palpha=1e-3, visu=visu)
