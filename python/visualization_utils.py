@@ -97,7 +97,7 @@ def plot_outp_sig(str_to_json=None, tmeshkey='tmesh', sigkey='outsig',
         fig.show()
 
 
-def cylwake_paraview(velvec=None, pvec=None, strtojson=None, visudict=None,
+def writevp_paraview(velvec=None, pvec=None, strtojson=None, visudict=None,
                      vfile='vel__.vtu', pfile='p__.vtu'):
     if visudict is None:
         jsfile = file(strtojson)

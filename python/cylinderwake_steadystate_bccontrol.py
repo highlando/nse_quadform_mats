@@ -16,7 +16,7 @@ NVdict = {1: 5812, 2: 9384}
 NV = NVdict[N]
 savedmatsstr = '../data/cylinderwake__mats_' +\
     'NV{1}_Re{0}_bccontrol_palpha{2}.mat'.format(1, NV, 1)
-visujsonstr = '../data/visualization_cylN{0}.jsn'.format(N)
+visujsonstr = '../data/visualization_cylinderwake_N{0}.jsn'.format(N)
 
 print 'Re = ', Re
 print 'NV = ', NV

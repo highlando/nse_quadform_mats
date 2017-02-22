@@ -14,7 +14,7 @@ NVdict = {1: 5812}
 NV = NVdict[N]
 savedmatsstr = '../data/cylinderwake__mats_NV{1}_Re{0}.mat'.\
     format(1, NV)
-visujsonstr = '../data/visualization_cylN{0}.jsn'.format(N)
+visujsonstr = '../data/visualization_cylinderwake_N{0}.jsn'.format(N)
 print 'Re = ', Re
 print 'NV = ', NV
 
@@ -80,5 +80,6 @@ resconti = J*nextv - fp
 print 'The conti residual: ', np.linalg.norm(resconti)
 
 import visualization_utils as vu
-vu.cylwake_paraview(pvec=nextp, velvec=nextv, strtojson=visujsonstr,
-                    pfileprefix='p__', vfileprefix='vel__')
+vu.writevp_paraview(pvec=nextp, velvec=nextv, strtojson=visujsonstr,
+                    pfile='p__cylinderwake_stst',
+                    vfile='vel__cylinderwake_stst')
