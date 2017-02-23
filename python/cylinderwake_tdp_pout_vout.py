@@ -67,7 +67,7 @@ poutlist = []
 voutlist = []
 vfile = rdir + vfileprfx + '__t{0}.vtu'.format(trange[0])
 pfile = rdir + pfileprfx + '__t{0}.vtu'.format(trange[0])
-vu.cylwake_paraview(velvec=stksv, pvec=stksp, vfile=vfile, pfile=pfile,
+vu.writevp_paraview(velvec=stksv, pvec=stksp, vfile=vfile, pfile=pfile,
                     strtojson=visujsonstr)
 vfilelist, pfilelist = [vfile], [pfile]
 for k, t in enumerate(trange):

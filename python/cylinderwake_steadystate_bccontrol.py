@@ -85,6 +85,13 @@ print 'NSE momentum eq residual: ', np.linalg.norm(curnseres)
 resconti = J*nextv - fp
 print 'The conti residual: ', np.linalg.norm(resconti)
 
+pfile = 'p__cylinderwake_stst_bccontrol.vtu'
+vfile = 'vel__cylinderwake_stst_bccontrol.vtu'
+
 import visualization_utils as vu
-vu.cylwake_paraview(pvec=nextp, velvec=nextv, strtojson=visujsonstr,
-                    pfile='p__', vfile='vel__')
+vu.writevp_paraview(pvec=nextp, velvec=nextv, strtojson=visujsonstr,
+                    pfile=pfile, vfile=vfile)
+
+print '\n### for visualization try:'
+print 'paraview ' + vfile
+print 'paraview ' + pfile

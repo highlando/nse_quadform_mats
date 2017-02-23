@@ -410,13 +410,13 @@ if __name__ == '__main__':
     # comp_exp_nsbili(problemname='drivencavity', N=10, mddir=mddir, visu=visu)
     # comp_exp_nsbili(problemname='drivencavity', N=20, mddir=mddir, visu=visu)
     # comp_exp_nsbili(problemname='drivencavity', N=30, mddir=mddir, visu=visu)
-    comp_exp_nsbili(problemname='cylinderwake', N=1, mddir=mddir, Re=80,
-                    visu=visu)
-    comp_exp_nsbili(problemname='cylinderwake', N=1, mddir=mddir, Re=40,
-                    visu=visu)
-    comp_exp_nsbili(problemname='cylinderwake', N=1, mddir=mddir, visu=visu)
-    comp_exp_nsbili(problemname='cylinderwake', N=3, mddir=mddir, visu=visu)
+    # comp_exp_nsbili(problemname='cylinderwake', N=1, mddir=mddir, Re=80,
+    #                 visu=visu)
+    # comp_exp_nsbili(problemname='cylinderwake', N=1, mddir=mddir, Re=40,
+    #                 visu=visu)
+    # comp_exp_nsbili(problemname='cylinderwake', N=1, mddir=mddir, visu=visu)
+    # comp_exp_nsbili(problemname='cylinderwake', N=3, mddir=mddir, visu=visu)
     comp_exp_nsbili(problemname='cylinderwake', N=2,
                     mddir=mddir, bccontrol=True, palpha=1, visu=visu)
-    comp_exp_nsbili(problemname='cylinderwake', N=2, Re=40,
-                    mddir=mddir, bccontrol=True, palpha=1e-3, visu=visu)
+    # comp_exp_nsbili(problemname='cylinderwake', N=2, Re=40,
+    #                 mddir=mddir, bccontrol=True, palpha=1e-3, visu=visu)
