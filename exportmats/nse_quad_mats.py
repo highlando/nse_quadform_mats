@@ -16,7 +16,8 @@ dolfin.parameters.linear_algebra_backend = 'Eigen'
 
 
 def comp_exp_nsbili(problemname='drivencavity', N=10, bccontrol=False,
-                    mddir='pathtodatastorage', Re=1, palpha=1, visu=False):
+                    Re=1, palpha=1,
+                    mddir='pathtodatastorage', compressdata=True, visu=False):
 
     # the Reynoldsnumber will be multiplied to the matrices later
 
@@ -247,7 +248,7 @@ def comp_exp_nsbili(problemname='drivencavity', N=10, bccontrol=False,
         savematdict.update(Brob=Brob, Arob=Arob)
         matssstr = matssstr + '_bccontrol_palpha{0}'.format(palpha)
     scipy.io.savemat(mddir + data_prfx + matssstr, savematdict,
-                     do_compression=True)
+                     do_compression=compressdata)
     print 'saved mats to: ' + mddir + data_prfx + matssstr
     # NOTE: no case distinction between boundary controlled and uncontrolled
     # case as all boundaries will be initialized with zero
@@ -415,8 +416,13 @@ if __name__ == '__main__':
     # comp_exp_nsbili(problemname='cylinderwake', N=1, mddir=mddir, Re=40,
     #                 visu=visu)
     # comp_exp_nsbili(problemname='cylinderwake', N=1, mddir=mddir, visu=visu)
+    # comp_exp_nsbili(problemname='cylinderwake', N=2, mddir=mddir, visu=visu)
     # comp_exp_nsbili(problemname='cylinderwake', N=3, mddir=mddir, visu=visu)
-    comp_exp_nsbili(problemname='cylinderwake', N=2,
+    # comp_exp_nsbili(problemname='cylinderwake', N=1,
+    #                 mddir=mddir, bccontrol=True, palpha=1, visu=visu)
+    # comp_exp_nsbili(problemname='cylinderwake', N=2,
+    #                 mddir=mddir, bccontrol=True, palpha=1, visu=visu)
+    comp_exp_nsbili(problemname='cylinderwake', N=3, compressdata=True,
                     mddir=mddir, bccontrol=True, palpha=1, visu=visu)
     # comp_exp_nsbili(problemname='cylinderwake', N=2, Re=40,
     #                 mddir=mddir, bccontrol=True, palpha=1e-3, visu=visu)

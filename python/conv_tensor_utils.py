@@ -6,15 +6,24 @@ import dolfin_navier_scipy.data_output_utils as dou
 
 
 def linearzd_quadterm(H, linv, retparts=False, hlstr=None):
-    """ compute the matrices that represent the linearized convection
+    """ compute the matrices `L1`, `L2` that represent the linearized convection
+
+    `H(v, v) ~ L1*v + L2*v - H(linv, linv)`
 
 
     Parameters:
     ---
+    H : (nv, nv*nv) sparse array
+        the tensor (as a matrix) that evaluates the convection term
+    linv : (nv, 1) numpy array
+        the stat at which the linearization is about
+    retparts: Boolean, optional
+        whether to return the `L1` or `L2` separately, \
+        defaults to `False`, i.e. `L1+L2` is returned
     hlstr : str, optional
         name of location from where to load or where to store the \
         the wanted data, if `None` nothing is loaded or stored, \
-        defaults to `None
+        defaults to `None`
 
     """
     try:
@@ -40,10 +49,16 @@ def linearzd_quadterm(H, linv, retparts=False, hlstr=None):
 
 def eva_quadterm(H, v):
     ''' function to evaluate `H*kron(v, v)` without forming `kron(v, v)`
+
+    Parameters:
+    ---
+    H : (nv, nv*nv) sparse array
+        the tensor (as a matrix) that evaluates the convection term
+
     '''
+
     NV = v.size
     hvv = np.zeros((NV, 1))
-    # with dou.Timer('eva: h*vv'):
     for k, vi in enumerate(v):
         hviv = H[:, k*NV:(k+1)*NV]*(vi[0]*v)
         hvv = hvv + hviv

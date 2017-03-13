@@ -80,8 +80,8 @@ resconti = J*nextv - fp
 print 'The conti residual: ', np.linalg.norm(resconti)
 
 import visualization_utils as vu
-pfile = 'p__cylinderwake_stst.vtu'
-vfile = 'v__cylinderwake_stst.vtu'
+pfile = 'p__cylinderwake_stst_Re{}_NV{}.vtu'.format(Re, NV)
+vfile = 'v__cylinderwake_stst_Re{}_NV{}.vtu'.format(Re, NV)
 vu.writevp_paraview(pvec=nextp, velvec=nextv, strtojson=visujsonstr,
                     pfile=pfile, vfile=vfile)
 

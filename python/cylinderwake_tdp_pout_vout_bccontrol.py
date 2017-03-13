@@ -104,6 +104,10 @@ for k, t in enumerate(trange):
 vu.collect_vtu_files(vfilelist, vfileprfx+'.pvd')
 vu.collect_vtu_files(pfilelist, pfileprfx+'.pvd')
 
+print '\n### for visualization try:'
+print 'paraview ' + vfileprfx + '.pvd'
+print 'paraview ' + pfileprfx + '.pvd'
+
 tikzfile = 'tikzs/p_nsequadtens-N{0}-tE{1}-Nts{2}-bccomg{3}'.\
     format(N, tE, Nts, omeg)
 vu.plot_prs_outp(outsig=poutlist, tmesh=trange, tikzfile=tikzfile)
