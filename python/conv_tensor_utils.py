@@ -39,11 +39,19 @@ def linearzd_quadterm(H, linv, retparts=False, hlstr=None):
         print 'assembling hlmat ...'
     nv = linv.size
     if retparts:
-        H1L = H * (sps.kron(sps.eye(nv), linv))
-        H2L = H * (sps.kron(linv, sps.eye(nv)))
+        try:
+            H1L = H * (sps.kron(sps.eye(nv), linv))
+            H2L = H * (sps.kron(linv, sps.eye(nv)))
+        except TypeError:  # for earlier scipys
+            H1L = H * (sps.kron(sps.eye(nv, nv), linv))
+            H2L = H * (sps.kron(linv, sps.eye(nv, nv)))
         return H1L, H2L
     else:
-        HL = H * (sps.kron(sps.eye(nv), linv) + sps.kron(linv, sps.eye(nv)))
+        try:
+            HL = H * (sps.kron(sps.eye(nv), linv) + sps.kron(linv, sps.eye(nv)))
+        except TypeError:  # for earlier scipys
+            HL = H * (sps.kron(sps.eye(nv, nv), linv) + \
+                sps.kron(linv, sps.eye(nv, nv)))
         return HL
 
 
