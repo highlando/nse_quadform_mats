@@ -2,7 +2,6 @@ import scipy.sparse as sps
 import numpy as np
 # from dolfin import dx, grad, inner
 
-import dolfin_navier_scipy.data_output_utils as dou
 
 
 def linearzd_quadterm(H, linv, retparts=False, hlstr=None):
@@ -27,6 +26,7 @@ def linearzd_quadterm(H, linv, retparts=False, hlstr=None):
 
     """
     try:
+        import dolfin_navier_scipy.data_output_utils as dou
         if hlstr is None:
             raise IOError()
         if retparts:
@@ -35,7 +35,7 @@ def linearzd_quadterm(H, linv, retparts=False, hlstr=None):
         else:
             HL = dou.load_spa(hlstr + '.mtx')
         print 'loaded `hlmat`'
-    except IOError:
+    except (IOError, ImportError) as e:
         print 'assembling hlmat ...'
     nv = linv.size
     if retparts:
