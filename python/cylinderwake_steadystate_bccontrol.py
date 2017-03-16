@@ -5,7 +5,7 @@ import scipy.sparse.linalg as spsla
 import conv_tensor_utils as ctu
 import visualization_utils as vu
 
-# hard coded paths and dictory for data
+# hard coded paths and dictionary for data
 NVdict          = {1: 5824, 2: 9384,  3: 19512}
 savedmatsstr    = lambda NV: '../data/cylinderwake__mats_NV{1}_Re{0}_bccontrol_palpha{2}.mat'.format(1,NV,1)
 visujsonstr     = lambda N : '../data/visualization_cylinderwake_N{0}.jsn'.format(N)
@@ -22,7 +22,7 @@ NV          = NVdict[N]
 
 # visualisation files
 pfile = 'p__cylinderwake_stst_bccontrol_Re{0}_NV{1}_palpha{2:e}.vtu'.format(Re, NV, palpha)
-vfile = 'v__cylinderwake_stst_bccontrol_Re{0}_NV{1}_palpha{2:e}.vtu'.format(Re, NV, palpha)
+vfile = 'vel__cylinderwake_stst_bccontrol_Re{0}_NV{1}_palpha{2:e}.vtu'.format(Re, NV, palpha)
 
 
 # print reynolds number and discretization lvl
@@ -79,6 +79,7 @@ print 'NSE momentum eq residual: {0:e}'.format(np.linalg.norm(curnseres))
 resconti = J*nextv - fp
 print 'The conti residual:       {0:e}'.format(np.linalg.norm(resconti))
 print '\n'
+
 
 # write paraview
 vu.writevp_paraview(pvec=nextp, velvec=nextv, strtojson=visujsonstr(N),pfile=pfile, vfile=vfile)

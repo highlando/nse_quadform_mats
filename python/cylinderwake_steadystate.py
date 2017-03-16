@@ -5,7 +5,7 @@ import scipy.sparse.linalg as spsla
 import conv_tensor_utils as ctu
 import visualization_utils as vu
 
-# hard coded paths and dictory for data
+# hard coded paths and dictionary for data
 NVdict          = {1: 5812, 2: 9356,  3: 19468}
 savedmatsstr    = lambda NV: '../data/cylinderwake__mats_NV{1}_Re{0}.mat'.format(1,NV)
 visujsonstr     = lambda N : '../data/visualization_cylinderwake_N{0}.jsn'.format(N)
