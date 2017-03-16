@@ -1,90 +1,86 @@
 import numpy as np
-
 import scipy.io
 import scipy.sparse as sps
 import scipy.sparse.linalg as spsla
-
 import conv_tensor_utils as ctu
+import visualization_utils as vu
 
-N = 1
-Re = 40
+# hard coded paths and dictory for data
+NVdict          = {1: 5812, 2: 9356,  3: 19468}
+savedmatsstr    = lambda NV: '../data/cylinderwake__mats_NV{1}_Re{0}.mat'.format(1,NV)
+visujsonstr     = lambda N : '../data/visualization_cylinderwake_N{0}.jsn'.format(N)
 
-NVdict = {1: 5812}
 
-NV = NVdict[N]
-savedmatsstr = '../data/cylinderwake__mats_NV{1}_Re{0}.mat'.\
-    format(1, NV)
-visujsonstr = '../data/visualization_cylinderwake_N{0}.jsn'.format(N)
-print 'Re = ', Re
-print 'NV = ', NV
-
+# setup parameters
+Re          = 40
 npicardstps = 5
+N           = 1
+NV          = NVdict[N]
 
-# get the coefficients
-mats = scipy.io.loadmat(savedmatsstr)
-A = 1./Re*mats['A'] + mats['L1'] + mats['L2']
-M = mats['M']
-J = mats['J']
-hmat = mats['H']
-fv = mats['fv'] + 1./Re*mats['fv_diff'] + mats['fv_conv']
-fp = mats['fp'] + mats['fp_div']
-NV, NP = fv.shape[0], fp.shape[0]
 
-updnorm = 1
-curv = np.zeros((NV, 1))
-curvp = np.zeros((NV+NP, 1))
+# visualisation files
+pfile = 'p__cylinderwake_stst_Re{0}_NV{1}.vtu'.format(Re, NV)
+vfile = 'v__cylinderwake_stst_Re{0}_NV{1}.vtu'.format(Re, NV)
 
-stpcount = 0
+
+# print reynolds number and discretization lvl
+print 'Re = {0}'.format(Re)
+print 'NV = {0}'.format(NV)
+print '\n'
+
+
+# load the coefficients matrices
+mats    = scipy.io.loadmat(savedmatsstr(NV))
+M       = mats['M']
+A       = 1./Re*mats['A'] + mats['L1'] + mats['L2']
+J       = mats['J']
+hmat    = mats['H']
+fv      = mats['fv'] + 1./Re*mats['fv_diff'] + mats['fv_conv']
+fp      = mats['fp'] + mats['fp_div']
+NV, NP  = fv.shape[0], fp.shape[0]
+
+
+# solve steady state equation
+updnorm     = 1
+curv        = np.zeros((NV, 1))
+curvp       = np.zeros((NV+NP, 1))
+stpcount    = 0
+
 while updnorm > 1e-10:
     picard = True if stpcount < npicardstps else False
-
-    def linnsevp(nxvp):
-        nxv = nxvp[:NV].reshape((NV, 1))
-        nxp = nxvp[NV:].reshape((NP, 1))
-        if picard:
-            momeq = A*nxv + hmat*np.kron(nxv, curv) - J.T*nxp
-        else:
-            momeq = A*nxv + hmat*np.kron(nxv, curv) + hmat*np.kron(curv, nxv) \
-                - J.T*nxp
-        contieq = J*nxv
-        return np.vstack([momeq.reshape((NV, 1)),
-                          contieq.reshape((NP, 1))])
-
-    aph = spsla.LinearOperator((NV+NP, NV+NP), matvec=linnsevp)
 
     if picard:
         currhs = np.vstack([fv, fp])
     else:
         currhs = np.vstack([fv+hmat*np.kron(curv, curv), fp])
 
-    H1k, H2k = ctu.linearzd_quadterm(hmat, curv, retparts=True)
-    HL = H1k if picard else H1k+H2k
-    cursysmat = sps.vstack([sps.hstack([A+HL, -J.T]),
-                            sps.hstack([J, sps.csc_matrix((NP, NP))])])
-    nextvp = spsla.spsolve(cursysmat, currhs).reshape((NV+NP, 1))
+    H1k, H2k    = ctu.linearzd_quadterm(hmat, curv, retparts=True)
+    HL          = H1k if picard else H1k+H2k
+    cursysmat   = sps.vstack([sps.hstack([A+HL, -J.T]),sps.hstack([J, sps.csc_matrix((NP, NP))])]).tocsc()
+    nextvp      = spsla.spsolve(cursysmat, currhs).reshape((NV+NP, 1))
 
-    ittype = 'Picard' if picard else 'Newton'
-    print 'Iteration step {0} ({1})'.format(stpcount, ittype)
-    nextv = nextvp[:NV].reshape((NV, 1))
-    nextp = nextvp[NV:].reshape((NP, 1))
-    curnseres = A*nextv + hmat*np.kron(nextv, nextv) - J.T*nextp - fv
-    print 'norm of nse residual', np.linalg.norm(curnseres)
-    updnorm = np.linalg.norm(nextv - curv) / np.linalg.norm(nextv)
-    print 'norm of current update :', updnorm
+    print 'Iteration step {0} ({1})'.format(stpcount, 'Picard' if picard else 'Newton')
+    nextv       = nextvp[:NV].reshape((NV, 1))
+    nextp       = nextvp[NV:].reshape((NP, 1))
+    curnseres   = A*nextv + hmat*np.kron(nextv, nextv) - J.T*nextp - fv
+    print 'Norm of nse residual:   {0:e}'.format(np.linalg.norm(curnseres))
+    updnorm     = np.linalg.norm(nextv - curv) / np.linalg.norm(nextv)
+    print 'Norm of current update: {0:e}'.format(updnorm)
+    print '\n'
     curv = nextv
     stpcount += 1
 
-print '\n *** Done *** \n'
-print 'NSE momentum eq residual: ', np.linalg.norm(curnseres)
+
+# print results
+print '*** Done ***'
+print 'NSE momentum eq residual: {0:e}', np.linalg.norm(curnseres)
 resconti = J*nextv - fp
-print 'The conti residual: ', np.linalg.norm(resconti)
+print 'The conti residual:       {0:e}', np.linalg.norm(resconti)
+print '\n'
 
-import visualization_utils as vu
-pfile = 'p__cylinderwake_stst_Re{}_NV{}.vtu'.format(Re, NV)
-vfile = 'v__cylinderwake_stst_Re{}_NV{}.vtu'.format(Re, NV)
-vu.writevp_paraview(pvec=nextp, velvec=nextv, strtojson=visujsonstr,
-                    pfile=pfile, vfile=vfile)
 
-print '\n### for visualization try:'
-print 'paraview ' + vfile
-print 'paraview ' + pfile
+# write paraview
+vu.writevp_paraview(pvec=nextp, velvec=nextv, strtojson=visujsonstr(N),pfile=pfile, vfile=vfile)
+print '*** for visualization try ***'
+print 'paraview {0}'.format(vfile)
+print 'paraview {0}'.format(pfile)
