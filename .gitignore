@@ -1,3 +1,5 @@
 *.pvd
 *.vtu
 *.npy
+core
+*.pyc
