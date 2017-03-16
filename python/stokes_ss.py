@@ -7,7 +7,7 @@ import scipy.sparse.linalg as spsla
 N = 5812
 Re = 80
 
-savedmatsstr = '../data/cylinderwake__mats_N{1}_Re{0}.mat'.\
+savedmatsstr = '../data/cylinderwake__mats_NV{1}_Re{0}.mat'.\
     format(1, N)
 print 'Re = ', Re
 print 'NV = ', N
@@ -34,8 +34,8 @@ print 'The Stokes momentum eq residual: ', np.linalg.norm(resstksmom)
 print 'The conti residual: ', np.linalg.norm(resconti)
 
 try:
-    savedmatsstr = '../data/cylinderwake__mats_N{1}_Re{0}.mat'.\
-        format(Re, N)
+    savedmatsstr = '../data/cylinderwake__mats_NV{1}_Re{0}.mat'.\
+        format(1, N)
     mats = scipy.io.loadmat(savedmatsstr)
     vssstks = mats['v_ss_stokes']
     pssstks = mats['p_ss_stokes']
