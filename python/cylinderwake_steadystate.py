@@ -4,6 +4,8 @@ import scipy.sparse as sps
 import scipy.sparse.linalg as spsla
 import conv_tensor_utils as ctu
 import visualization_utils as vu
+import sys, getopt
+
 
 # hard coded paths and dictionary for data
 NVdict          = {1: 5812, 2: 9356,  3: 19468}
@@ -11,21 +13,35 @@ savedmatsstr    = lambda NV: '../data/cylinderwake__mats_NV{1}_Re{0}.mat'.format
 visujsonstr     = lambda N : '../data/visualization_cylinderwake_N{0}.jsn'.format(N)
 
 
-# setup parameters
+# setup standard parameters
+N           = 1
 Re          = 40
 npicardstps = 5
-N           = 1
-NV          = NVdict[N]
+
+
+# get command line input and overwrite standard paramters if necessary
+options, rest = getopt.getopt(sys.argv[1:], '',['N=', 'Re=', 'Picardsteps='])
+for opt, arg in options: 
+    if opt == '--N':
+        N = int(arg)
+    elif opt == '--Re':
+        Re = int(arg)
+    elif opt == '--Picardsteps':
+        npicardstps = int(arg)
 
 
 # visualisation files
+NV    = NVdict[N]
 pfile = 'p__cylinderwake_stst_Re{0}_NV{1}.vtu'.format(Re, NV)
 vfile = 'v__cylinderwake_stst_Re{0}_NV{1}.vtu'.format(Re, NV)
-
+        
 
 # print reynolds number and discretization lvl
-print 'Re = {0}'.format(Re)
-print 'NV = {0}'.format(NV)
+print 'Re           = {0}'.format(Re)
+print 'NV           = {0}'.format(NV)
+print 'Picardsteps  = {0}'.format(npicardstps)
+print 'pfile        = {0}'.format(pfile)
+print 'vfile        = {0}'.format(vfile)
 print '\n'
 
 

@@ -4,7 +4,7 @@ import scipy.sparse as sps
 import scipy.sparse.linalg as spsla
 import conv_tensor_utils as ctu
 import visualization_utils as vu
-
+import sys, getopt
 
 # hard coded paths and dictionary for data
 NVdict          = {1: 5812, 2: 9356,  3: 19468}
@@ -13,16 +13,36 @@ visujsonstr     = lambda N : '../data/visualization_cylinderwake_N{0}.jsn'.forma
 
 
 # setup parameters
+N           = 1
 Re          = 40
 npicardstps = 5
-N           = 1
-NV          = NVdict[N]
 
 
 # parameters for time stepping
 t0          = 0.
 tE          = 4.
 Nts         = 2**11
+
+
+# get command line input and overwrite standard paramters if necessary
+options, rest = getopt.getopt(sys.argv[1:], '',['N=', 'Re=', 'Picardsteps=', 't0=', 'tE=', 'Nts='])
+for opt, arg in options: 
+    if opt == '--N':
+        N = int(arg)
+    elif opt == '--Re':
+        Re = int(arg)
+    elif opt == '--Picardsteps':
+        npicardstps = int(arg)
+    elif opt == '--t0':
+        t0 = float(arg)
+    elif opt == '--tE':
+        tE = float(arg)
+    elif opt == '--Nts':
+        Nts == int(arg)
+
+
+# further parameters
+NV          = NVdict[N]
 DT          = (tE-t0)/Nts
 trange      = np.linspace(t0, tE, Nts+1)
 
@@ -37,17 +57,18 @@ vfile       = lambda t : rdir + vfileprfx + '__t{0}.vtu'.format(t)
 pfile       = lambda t : rdir + pfileprfx + '__t{0}.vtu'.format(t)
 vfilelist   = [vfile(trange[0])]
 pfilelist   = [pfile(trange[0])]
-ptikzfile   = 'tikzs/p_nsequadtens-N{0}-tE{1}-Nts{2}'.format(N, tE, Nts)
-vtikzfile   = 'tikzs/v_nsequadtens-N{0}-tE{1}-Nts{2}'.format(N, tE, Nts)
+ptikzfile   = 'tikz/p_nsequadtens-N{0}-tE{1}-Nts{2}'.format(N, tE, Nts)
+vtikzfile   = 'tikz/v_nsequadtens-N{0}-tE{1}-Nts{2}'.format(N, tE, Nts)
 
 
 # print reynolds number, discretization lvl, and other params
-print 'Re  = {0}'.format(Re)
-print 'NV  = {0}'.format(NV)
-print 't0  = {0}'.format(t0)
-print 'tE  = {0}'.format(tE)
-print 'Nts = {0}'.format(Nts)
-print 'DT  = {0}'.format(DT)
+print 'Re           = {0}'.format(Re)
+print 'NV           = {0}'.format(NV)
+print 'Picardsteps  = {0}'.format(npicardstps)
+print 't0           = {0}'.format(t0)
+print 'tE           = {0}'.format(tE)
+print 'Nts          = {0}'.format(Nts)
+print 'DT           = {0}'.format(DT)
 print '\n'
 
 

@@ -4,6 +4,7 @@ import scipy.sparse as sps
 import scipy.sparse.linalg as spsla
 import conv_tensor_utils as ctu
 import visualization_utils as vu
+import sys, getopt
 
 # hard coded paths and dictionary for data
 NVdict          = {1: 5824, 2: 9384,  3: 19512}
@@ -12,23 +13,41 @@ visujsonstr     = lambda N : '../data/visualization_cylinderwake_N{0}.jsn'.forma
 
 
 # setup parameters
+N           = 1
 Re          = 40
+npicardstps = 5
 palpha      = 1e-3                      # penalty for robin boundary control
 uvec        = 1*np.array([[1], [-1]])   # the steady input
-npicardstps = 5
-N           = 1
-NV          = NVdict[N]
+
+
+# get command line input and overwrite standard paramters if necessary
+options, rest = getopt.getopt(sys.argv[1:], '',['N=', 'Re=', 'Picardsteps=', 'palpha='])
+for opt, arg in options: 
+    if opt == '--N':
+        N = int(arg)
+    elif opt == '--Re':
+        Re = int(arg)
+    elif opt == '--Picardsteps':
+        npicardstps = int(arg)
+    elif opt == '--palpha':
+        palpha = float(arg)
 
 
 # visualisation files
+NV    = NVdict[N]
 pfile = 'p__cylinderwake_stst_bccontrol_Re{0}_NV{1}_palpha{2:e}.vtu'.format(Re, NV, palpha)
-vfile = 'vel__cylinderwake_stst_bccontrol_Re{0}_NV{1}_palpha{2:e}.vtu'.format(Re, NV, palpha)
+vfile = 'v__cylinderwake_stst_bccontrol_Re{0}_NV{1}_palpha{2:e}.vtu'.format(Re, NV, palpha)
 
 
 # print reynolds number and discretization lvl
-print 'Re = {0}'.format(Re)
-print 'NV = {0}'.format(NV)
+print 'Re           = {0}'.format(Re)
+print 'NV           = {0}'.format(NV)
+print 'Picardsteps  = {0}'.format(npicardstps)
+print 'palpha       = {0}'.format(palpha)
+print 'pfile        = {0}'.format(pfile)
+print 'vfile        = {0}'.format(vfile)
 print '\n'
+
 
 # load the coefficients matrices
 mats    = scipy.io.loadmat(savedmatsstr(NV))

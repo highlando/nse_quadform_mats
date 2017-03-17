@@ -4,6 +4,7 @@ import scipy.sparse as sps
 import scipy.sparse.linalg as spsla
 import conv_tensor_utils as ctu
 import visualization_utils as vu
+import sys, getopt
 
 # hard coded paths and dictionary for data
 NVdict          = {1: 5824, 2: 9384,  3: 19512}
@@ -12,11 +13,10 @@ visujsonstr     = lambda N : '../data/visualization_cylinderwake_N{0}.jsn'.forma
 
 
 # setup parameters
+N           = 1
 Re          = 40
 npicardstps = 5
 palpha      = 1e-3
-N           = 1
-NV          = NVdict[N]
 omeg        = 3.  # parameter for the frequency of the input signal
 
 
@@ -24,6 +24,31 @@ omeg        = 3.  # parameter for the frequency of the input signal
 t0          = 0.
 tE          = 4.
 Nts         = 2**11
+
+
+# get command line input and overwrite standard paramters if necessary
+options, rest = getopt.getopt(sys.argv[1:], '',['N=', 'Re=', 'Picardsteps=', 'palpha=', 'omega=', 't0=', 'tE=', 'Nts='])
+for opt, arg in options: 
+    if opt == '--N':
+        N = int(arg)
+    elif opt == '--Re':
+        Re = int(arg)
+    elif opt == '--Picardsteps':
+        npicardstps = int(arg)
+    elif opt == '--palpha':
+        palpha = float(arg)
+    elif opt == '--omega':
+        omeg = float(arg)
+    elif opt == '--t0':
+        t0 = float(arg)
+    elif opt == '--tE':
+        tE = float(arg)
+    elif opt == '--Nts':
+        Nts == int(arg)
+
+
+# further parameters
+NV          = NVdict[N]
 DT          = (tE-t0)/Nts
 trange      = np.linspace(t0, tE, Nts+1)
 
@@ -43,12 +68,14 @@ vtikzfile   = 'tikz/v_nsequadtens-N{0}-tE{1}-Nts{2}-bccomg{3}'.format(N, tE, Nts
 
 
 # print reynolds number, discretization lvl, and other params
-print 'Re  = {0}'.format(Re)
-print 'NV  = {0}'.format(NV)
-print 't0  = {0}'.format(t0)
-print 'tE  = {0}'.format(tE)
-print 'Nts = {0}'.format(Nts)
-print 'DT  = {0}'.format(DT)
+print 'Re       = {0}'.format(Re)
+print 'NV       = {0}'.format(NV)
+print 'palpha   = {0}'.format(palpha)
+print 'omega    = {0}'.format(omeg)
+print 't0       = {0}'.format(t0)
+print 'tE       = {0}'.format(tE)
+print 'Nts      = {0}'.format(Nts)
+print 'DT       = {0}'.format(DT)
 print '\n'
 
 

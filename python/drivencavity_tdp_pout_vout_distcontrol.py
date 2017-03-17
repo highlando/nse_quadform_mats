@@ -13,10 +13,9 @@ visujsonstr     = lambda N : '../data/visualization_drivencavity_N{0}.jsn'.forma
 
 
 # setup parameters
+N           = 20
 Re          = 800
 npicardstps = 5
-N           = 20
-NV          = NVdict[N]
 omeg        = 4.  # parameter for the frequency of the input signal
 
 
@@ -24,6 +23,29 @@ omeg        = 4.  # parameter for the frequency of the input signal
 t0          = 0.
 tE          = 20.
 Nts         = 2**12
+
+
+# get command line input and overwrite standard paramters if necessary
+options, rest = getopt.getopt(sys.argv[1:], '',['N=', 'Re=', 'Picardsteps=', 'omega=', 't0=', 'tE=', 'Nts='])
+for opt, arg in options: 
+    if opt == '--N':
+        N = int(arg)
+    elif opt == '--Re':
+        Re = int(arg)
+    elif opt == '--Picardsteps':
+        npicardstps = int(arg)
+    elif opt == '--omega':
+        omeg = float(arg)
+    elif opt == '--t0':
+        t0 = float(arg)
+    elif opt == '--tE':
+        tE = float(arg)
+    elif opt == '--Nts':
+        Nts == int(arg)
+
+
+# further parameters
+NV          = NVdict[N]
 DT          = (tE-t0)/Nts
 trange      = np.linspace(t0, tE, Nts+1)
 
@@ -43,12 +65,13 @@ vtikzfile   = 'tikz/v_nsequadtens-N{0}-tE{1}-Nts{2}-bccomg{3}'.format(N, tE, Nts
 
 
 # print reynolds number, discretization lvl, and other params
-print 'Re  = {0}'.format(Re)
-print 'NV  = {0}'.format(NV)
-print 't0  = {0}'.format(t0)
-print 'tE  = {0}'.format(tE)
-print 'Nts = {0}'.format(Nts)
-print 'DT  = {0}'.format(DT)
+print 'Re       = {0}'.format(Re)
+print 'NV       = {0}'.format(NV)
+print 'omega    = {0}'.format(omeg)
+print 't0       = {0}'.format(t0)
+print 'tE       = {0}'.format(tE)
+print 'Nts      = {0}'.format(Nts)
+print 'DT       = {0}'.format(DT)
 print '\n'
 
 
@@ -99,7 +122,6 @@ stksv   = stksvp[:NV].reshape((NV, 1))
 stksp   = (np.r_[stksvp[NV:].flatten(), 0]).reshape((NP, 1))
 
 
-
 # Preparing for the output
 vu.writevp_paraview(velvec=stksv, pvec=stksp, vfile=vfile(trange[0]), pfile=pfile(trange[0]), strtojson=visujsonstr(N))
 
@@ -132,5 +154,7 @@ vu.collect_vtu_files(pfilelist, pfileprfx+'.pvd')
 # write to tikz file
 vu.plot_prs_outp(outsig=poutlist, tmesh=trange, fignum=222, tikzfile=ptikzfile)
 vu.plot_prs_outp(outsig=voutlist, tmesh=trange, fignum=123, tikzfile=vtikzfile)
+
+
 
 
