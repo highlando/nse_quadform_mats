@@ -7,6 +7,7 @@ before_script:
 
 stages: 
   - python2
+  - python3
 
 #------Ubuntu 12.04-------
 
@@ -17,26 +18,70 @@ ubuntu1204-python2:
     - code-4-pub
     - /^behr.*$/
   script: 
-    - ls -hla
-    - pwd
     - "chmod u+x ci-scripts/python/ubuntu-python2.sh"
     - "./ci-scripts/python/ubuntu-python2.sh"
   stage: python2
 
+ubuntu1204-python3: 
+  image: "local:ubuntu-precise-base"
+  only: 
+    - master
+    - code-4-pub
+    - /^behr.*$/
+  script: 
+    - "chmod u+x ci-scripts/python/ubuntu-python3.sh"
+    - "./ci-scripts/python/ubuntu-python3.sh"
+  stage: python3
 
-##------Ubuntu 14.04-------
-#
-#ubuntu1404-full-test: 
-#  image: "local:ubuntu-trusty-base"
-#  only: 
-#    - master
-#    - /^behr.*$/
-#  script: 
-#    - "chmod u+x scripts/gitlab-ci/ubuntu1404-full-test.sh"
-#    - "./scripts/gitlab-ci/ubuntu1404-full-test.sh"
-#  stage: full-test
-#
-#
+#------Ubuntu 14.04-------
+
+ubuntu1404-python2: 
+  image: "local:ubuntu-trusty-base"
+  only: 
+    - master
+    - code-4-pub
+    - /^behr.*$/
+  script: 
+    - "chmod u+x ci-scripts/python/ubuntu-python2.sh"
+    - "./ci-scripts/python/ubuntu-python2.sh"
+  stage: python2
+
+ubuntu1404-python3: 
+  image: "local:ubuntu-trusty-base"
+  only: 
+    - master
+    - code-4-pub
+    - /^behr.*$/
+  script: 
+    - "chmod u+x ci-scripts/python/ubuntu-python3.sh"
+    - "./ci-scripts/python/ubuntu-python3.sh"
+  stage: python3
+
+#------Ubuntu 16.04-------
+
+ubuntu1604-python2: 
+  image: "local:ubuntu-xenial-base"
+  only: 
+    - master
+    - code-4-pub
+    - /^behr.*$/
+  script: 
+    - "chmod u+x ci-scripts/python/ubuntu-python2.sh"
+    - "./ci-scripts/python/ubuntu-python2.sh"
+  stage: python2
+
+ubuntu1604-python3: 
+  image: "local:ubuntu-xenial-base"
+  only: 
+    - master
+    - code-4-pub
+    - /^behr.*$/
+  script: 
+    - "chmod u+x ci-scripts/python/ubuntu-python3.sh"
+    - "./ci-scripts/python/ubuntu-python3.sh"
+  stage: python3
+
+
 ##------Ubuntu 16.04-------
 #
 #ubuntu1604-full-test: 
