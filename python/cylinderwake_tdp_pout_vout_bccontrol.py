@@ -9,7 +9,7 @@ import sys, getopt
 # hard coded paths and dictionary for data
 NVdict          = {1: 5824, 2: 9384,  3: 19512}
 savedmatsstr    = lambda NV: '../data/cylinderwake__mats_NV{1}_Re{0}_bccontrol_palpha{2}.mat'.format(1,NV,1)
-visujsonstr     = lambda N : '../data/visualization_cylinderwake_N{0}.jsn'.format(N)
+visujsonstr     = lambda NV : '../data/visualization_cylinderwake_N{0}.jsn'.format(NV)
 
 
 # setup parameters
@@ -117,7 +117,7 @@ stksp   = stksvp[NV:].reshape((NP, 1))
 
 
 # Preparing for the output
-vu.writevp_paraview(velvec=stksv, pvec=stksp, vfile=vfile(trange[0]), pfile=pfile(trange[0]), strtojson=visujsonstr(N))
+vu.writevp_paraview(velvec=stksv, pvec=stksp, vfile=vfile(trange[0]), pfile=pfile(trange[0]), strtojson=visujsonstr(NV))
 
 
 # time stepping
@@ -135,7 +135,7 @@ for k, t in enumerate(trange):
     voutlist.append((vcmat*old_v).flatten())
     if np.mod(k, round(Nts/10)) == 0:
         print 'timestep {0:4d}/{1}, t={2:f}, |v|={3:e}'.format(k, Nts, t, np.linalg.norm(old_v))
-        vu.writevp_paraview(velvec=old_v, pvec=p, vfile=vfile(t), pfile=pfile(t),strtojson=visujsonstr(N))
+        vu.writevp_paraview(velvec=old_v, pvec=p, vfile=vfile(t), pfile=pfile(t),strtojson=visujsonstr(NV))
         vfilelist.append(vfile(t))
         pfilelist.append(pfile(t))
 

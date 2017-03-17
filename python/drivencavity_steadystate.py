@@ -9,7 +9,7 @@ import sys, getopt
 # hard coded paths and dictionary for data
 NVdict          = {10: 722, 20: 3042,  30: 6962}
 savedmatsstr    = lambda NV: '../data/drivencavity__mats_NV{1}_Re{0}.mat'.format(1,NV)
-visujsonstr     = lambda N : '../data/visualization_drivencavity_N{0}.jsn'.format(N)
+visujsonstr     = lambda NV : '../data/visualization_drivencavity_N{0}.jsn'.format(NV)
 
 
 # setup parameters
@@ -95,7 +95,7 @@ print '\n'
 
 
 # write paraview
-vu.writevp_paraview(pvec=nextp, velvec=nextv, strtojson=visujsonstr(N),pfile=pfile, vfile=vfile)
+vu.writevp_paraview(pvec=nextp, velvec=nextv, strtojson=visujsonstr(NV),pfile=pfile, vfile=vfile)
 print '*** for visualization try ***'
 print 'paraview {0}'.format(vfile)
 print 'paraview {0}'.format(pfile)

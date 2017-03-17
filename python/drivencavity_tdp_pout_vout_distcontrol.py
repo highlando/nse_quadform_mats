@@ -9,7 +9,7 @@ import visualization_utils as vu
 # hard coded paths and dictionary for data
 NVdict          = {10: 722, 20: 3042,  30: 6962}
 savedmatsstr    = lambda NV: '../data/drivencavity__mats_NV{1}_Re{0}.mat'.format(1,NV)
-visujsonstr     = lambda N : '../data/visualization_drivencavity_N{0}.jsn'.format(N)
+visujsonstr     = lambda NV : '../data/visualization_drivencavity_N{0}.jsn'.format(NV)
 
 
 # setup parameters
@@ -123,7 +123,7 @@ stksp   = (np.r_[stksvp[NV:].flatten(), 0]).reshape((NP, 1))
 
 
 # Preparing for the output
-vu.writevp_paraview(velvec=stksv, pvec=stksp, vfile=vfile(trange[0]), pfile=pfile(trange[0]), strtojson=visujsonstr(N))
+vu.writevp_paraview(velvec=stksv, pvec=stksp, vfile=vfile(trange[0]), pfile=pfile(trange[0]), strtojson=visujsonstr(NV))
 
 
 # time stepping
@@ -141,7 +141,7 @@ for k, t in enumerate(trange):
     voutlist.append((vcmat*old_v).flatten())
     if np.mod(k, round(Nts/100)) == 0:
         print 'timestep {0:4d}/{1}, t={2:f}'.format(k, Nts, t)
-        vu.writevp_paraview(velvec=old_v, pvec=p, vfile=vfile(t), pfile=pfile(t),strtojson=visujsonstr(N))
+        vu.writevp_paraview(velvec=old_v, pvec=p, vfile=vfile(t), pfile=pfile(t),strtojson=visujsonstr(NV))
         vfilelist.append(vfile(t))
         pfilelist.append(pfile(t))
 

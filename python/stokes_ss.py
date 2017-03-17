@@ -2,19 +2,34 @@ import numpy as np
 import scipy.io
 import scipy.sparse as sps
 import scipy.sparse.linalg as spsla
+import sys, getopt
+
 
 # hard coded paths and dictionary for data
 NVdict          = {1: 5812, 2: 9356,  3: 19468}
 savedmatsstr    = lambda NV: '../data/cylinderwake__mats_NV{1}_Re{0}.mat'.format(1,NV)
-visujsonstr     = lambda N : '../data/visualization_cylinderwake_N{0}.jsn'.format(N)
+visujsonstr     = lambda NV : '../data/visualization_cylinderwake_NV{0}.jsn'.format(NV)
 
 
 # setup parameters
+N           = 1
 Re          = 80
 npicardstps = 5
-N           = 1
-NV          = NVdict[N]
 
+
+# get command line input and overwrite standard paramters if necessary
+options, rest = getopt.getopt(sys.argv[1:], '',['N=', 'Re=', 'Picardsteps='])
+for opt, arg in options: 
+    if opt == '--N':
+        N = int(arg)
+    elif opt == '--Re':
+        Re = int(arg)
+    elif opt == '--Picardsteps':
+        npicardstps = int(arg)
+
+
+# futher parameters
+NV          = NVdict[N]
 
 # visualisation files
 pfile = 'p__cylinderwake_stst_Re{0}_NV{1}.vtu'.format(Re, NV)
@@ -22,8 +37,9 @@ vfile = 'v__cylinderwake_stst_Re{0}_NV{1}.vtu'.format(Re, NV)
 
 
 # print reynolds number and discretization lvl
-print 'Re = {0}'.format(Re)
-print 'NV = {0}'.format(NV)
+print 'Re           = {0}'.format(Re)
+print 'NV           = {0}'.format(NV)
+print 'Picardsteps  = {0}'.format(npicardstps)
 print '\n'
 
 

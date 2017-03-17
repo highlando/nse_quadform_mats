@@ -52,7 +52,9 @@ python drivencavity_tdp_pout_vout_distcontrol.py --N=30 --Re=500 --Picardsteps=5
 
 # cylinderwake stokes
 python stokes_ss.py
-
+python stokes_ss.py --N=1 --RE=50 --Picardsteps=5 
+python stokes_ss.py --N=2 --RE=50 --Picardsteps=5 
+python stokes_ss.py --N=3 --RE=50 --Picardsteps=5 
 
 # test units
 python test_units.py

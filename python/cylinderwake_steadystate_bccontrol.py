@@ -9,7 +9,7 @@ import sys, getopt
 # hard coded paths and dictionary for data
 NVdict          = {1: 5824, 2: 9384,  3: 19512}
 savedmatsstr    = lambda NV: '../data/cylinderwake__mats_NV{1}_Re{0}_bccontrol_palpha{2}.mat'.format(1,NV,1)
-visujsonstr     = lambda N : '../data/visualization_cylinderwake_N{0}.jsn'.format(N)
+visujsonstr     = lambda NV : '../data/visualization_cylinderwake_NV{0}.jsn'.format(NV)
 
 
 # setup parameters
@@ -101,7 +101,7 @@ print '\n'
 
 
 # write paraview
-vu.writevp_paraview(pvec=nextp, velvec=nextv, strtojson=visujsonstr(N),pfile=pfile, vfile=vfile)
+vu.writevp_paraview(pvec=nextp, velvec=nextv, strtojson=visujsonstr(NV),pfile=pfile, vfile=vfile)
 print '*** for visualization try ***'
 print 'paraview {0}'.format(vfile)
 print 'paraview {0}'.format(pfile)
