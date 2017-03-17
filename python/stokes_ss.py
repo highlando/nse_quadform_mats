@@ -37,10 +37,10 @@ vfile = 'v__cylinderwake_stst_Re{0}_NV{1}.vtu'.format(Re, NV)
 
 
 # print reynolds number and discretization lvl
-print 'Re           = {0}'.format(Re)
-print 'NV           = {0}'.format(NV)
-print 'Picardsteps  = {0}'.format(npicardstps)
-print '\n'
+print('Re           = {0}'.format(Re))
+print('NV           = {0}'.format(NV))
+print('Picardsteps  = {0}'.format(npicardstps))
+print('\n')
 
 
 # load the coefficients matrices
@@ -65,13 +65,13 @@ stksp   = stksvp[NV:].reshape((NP, 1))
 # print results
 resstksmom  = A*stksv - J.T*stksp - fv
 resconti    = J*stksv - fp
-print '*** Done ***'
-print 'The Stokes momentum eq residual: {0:e}'.format(np.linalg.norm(resstksmom))
-print 'The conti residual:              {0:e}'.format(np.linalg.norm(resconti))
+print('*** Done ***')
+print('The Stokes momentum eq residual: {0:e}'.format(np.linalg.norm(resstksmom)))
+print('The conti residual:              {0:e}'.format(np.linalg.norm(resconti)))
 
 vssstks = mats['v_ss_stokes']
 pssstks = mats['p_ss_stokes']
  
-print 'Difference of v solutions:       {0:e}'.format(np.linalg.norm(stksv - vssstks))
-print 'Difference of p solutions:       {0:e}'.format(np.linalg.norm(stksp - pssstks))
+print('Difference of v solutions:       {0:e}'.format(np.linalg.norm(stksv - vssstks)))
+print('Difference of p solutions:       {0:e}'.format(np.linalg.norm(stksp - pssstks)))
 

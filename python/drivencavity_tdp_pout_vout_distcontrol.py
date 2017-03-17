@@ -65,14 +65,14 @@ vtikzfile   = 'tikz/v_nsequadtens-N{0}-tE{1}-Nts{2}-bccomg{3}'.format(N, tE, Nts
 
 
 # print reynolds number, discretization lvl, and other params
-print 'Re       = {0}'.format(Re)
-print 'NV       = {0}'.format(NV)
-print 'omega    = {0}'.format(omeg)
-print 't0       = {0}'.format(t0)
-print 'tE       = {0}'.format(tE)
-print 'Nts      = {0}'.format(Nts)
-print 'DT       = {0}'.format(DT)
-print '\n'
+print('Re       = {0}'.format(Re))
+print('NV       = {0}'.format(NV))
+print('omega    = {0}'.format(omeg))
+print('t0       = {0}'.format(t0))
+print('tE       = {0}'.format(tE))
+print('Nts      = {0}'.format(Nts))
+print('DT       = {0}'.format(DT))
+print('\n')
 
 
 # load the coefficients matrices
@@ -106,13 +106,13 @@ def bbcu(t):
 
 
 # factorization of system matrix
-print 'computing LU once...'
+print('computing LU once...')
 sysmat  = sps.vstack([sps.hstack([M+DT*A, -J.T]), sps.hstack([J, sps.csc_matrix((NP-1, NP-1))])]).tocsc()
 sysmati = spsla.factorized(sysmat)
 
 
 # compute stokes solution as initial value
-print 'computing Stokes solution to be used as initial value...'
+print('computing Stokes solution to be used as initial value...')
 fvstks  = mats['fv'] + 1./Re*mats['fv_diff'] + bbcu(t0)
 Astks   = 1./Re*mats['A']
 stksrhs = np.vstack([fvstks, fp])
@@ -127,7 +127,7 @@ vu.writevp_paraview(velvec=stksv, pvec=stksp, vfile=vfile(trange[0]), pfile=pfil
 
 
 # time stepping
-print 'doing the time loop...'
+print('doing the time loop...')
 old_v = stksv
 
 for k, t in enumerate(trange):
@@ -140,7 +140,7 @@ for k, t in enumerate(trange):
     poutlist.append((pcmat*p)[0][0])
     voutlist.append((vcmat*old_v).flatten())
     if np.mod(k, round(Nts/100)) == 0:
-        print 'timestep {0:4d}/{1}, t={2:f}'.format(k, Nts, t)
+        print('timestep {0:4d}/{1}, t={2:f}'.format(k, Nts, t))
         vu.writevp_paraview(velvec=old_v, pvec=p, vfile=vfile(t), pfile=pfile(t),strtojson=visujsonstr(NV))
         vfilelist.append(vfile(t))
         pfilelist.append(pfile(t))

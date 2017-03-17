@@ -1,3 +1,4 @@
+from __future__ import print_function 
 import scipy.sparse as sps
 import numpy as np
 # from dolfin import dx, grad, inner
@@ -34,9 +35,9 @@ def linearzd_quadterm(H, linv, retparts=False, hlstr=None):
             H2L = dou.load_spa(hlstr + '_H2L.mtx')
         else:
             HL = dou.load_spa(hlstr + '.mtx')
-        print 'loaded `hlmat`'
+        print('loaded `hlmat`')
     except (IOError, ImportError) as e:
-        print 'assembling hlmat ...'
+        print('assembling hlmat ...')
     nv = linv.size
     if retparts:
         try:

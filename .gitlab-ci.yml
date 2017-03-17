@@ -9,30 +9,6 @@ stages:
   - python2
   - python3
 
-#------Ubuntu 12.04-------
-
-ubuntu1204-python2: 
-  image: "local:ubuntu-precise-base"
-  only: 
-    - master
-    - code-4-pub
-    - /^behr.*$/
-  script: 
-    - "chmod u+x ci-scripts/python/ubuntu-python2.sh"
-    - "./ci-scripts/python/ubuntu-python2.sh"
-  stage: python2
-
-ubuntu1204-python3: 
-  image: "local:ubuntu-precise-base"
-  only: 
-    - master
-    - code-4-pub
-    - /^behr.*$/
-  script: 
-    - "chmod u+x ci-scripts/python/ubuntu-python3.sh"
-    - "./ci-scripts/python/ubuntu-python3.sh"
-  stage: python3
-
 #------Ubuntu 14.04-------
 
 ubuntu1404-python2: 
@@ -81,4 +57,51 @@ ubuntu1604-python3:
     - "./ci-scripts/python/ubuntu-python3.sh"
   stage: python3
 
+
+#------Centos -------
+
+centos7-python2: 
+  image: "local:centos7-base"
+  only: 
+    - master
+    - code-4-pub
+    - /^behr.*$/
+  script: 
+    - "chmod u+x ci-scripts/python/centos7-python2.sh"
+    - "./ci-scripts/python/centos7-python2.sh"
+  stage: python2
+
+centos7-python3: 
+  image: "local:centos7-base"
+  only: 
+    - master
+    - code-4-pub
+    - /^behr.*$/
+  script: 
+    - "chmod u+x ci-scripts/python/centos7-python3.sh"
+    - "./ci-scripts/python/centos7-python3.sh"
+  stage: python3
+
+
+#------Opensuse421 -------
+
+opensuse421-python2: 
+  image: "local:opensuse-42-1-base"
+  only: 
+    - master
+    - /^behr.*$/
+  script: 
+    - "chmod u+x scripts/gitlab-ci/opensuse421-python2.sh"
+    - "./scripts/gitlab-ci/opensuse421-python2.sh"
+  stage: python2
+
+opensuse421-python3: 
+  image: "local:opensuse-42-1-base"
+  only: 
+    - master
+    - /^behr.*$/
+  script: 
+    - "chmod u+x scripts/gitlab-ci/opensuse421-python3.sh"
+    - "./scripts/gitlab-ci/opensuse421-python3.sh"
+  stage: python3
 

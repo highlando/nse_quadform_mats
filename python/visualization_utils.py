@@ -1,6 +1,8 @@
+from __future__ import print_function 
 import numpy as np
 import json
 import itertools
+from io import open
 
 
 def load_json_dicts(StrToJs):
@@ -37,9 +39,9 @@ def plot_prs_outp(str_to_json=None, tmeshkey='tmesh', sigkey='outsig',
                       figureheight='\\figureheight',
                       figurewidth='\\figurewidth'
                       )
-            print 'tikz saved to ' + tikzfile + '.tikz'
+            print('tikz saved to ' + tikzfile + '.tikz')
         except ImportError:
-            print '`matplotlib2tikz` not found'
+            print('`matplotlib2tikz` not found')
     if tikzonly:
         return
     else:
@@ -78,9 +80,9 @@ def plot_outp_sig(str_to_json=None, tmeshkey='tmesh', sigkey='outsig',
                       figureheight='\\figureheight',
                       figurewidth='\\figurewidth'
                       )
-            print 'tikz saved to ' + tikzfile + '.tikz'
+            print('tikz saved to ' + tikzfile + '.tikz')
         except ImportError:
-            print '`matplotlib2tikz` not found'
+            print('`matplotlib2tikz` not found')
         fig.show()
 
     if reference is not None:
@@ -99,43 +101,45 @@ def plot_outp_sig(str_to_json=None, tmeshkey='tmesh', sigkey='outsig',
 def writevp_paraview(velvec=None, pvec=None, strtojson=None, visudict=None,
                      vfile='vel__.vtu', pfile='p__.vtu'):
     if visudict is None:
-        jsfile = file(strtojson)
+        #jsfile = file(strtojson)
+        jsfile = open(strtojson)
         visudict = json.load(jsfile)
 
         vaux = np.zeros((visudict['vdim'], 1))
         # fill in the boundary values
         for bcdict in visudict['bclist']:
             intbcidx = [int(bci) for bci in bcdict.keys()]
-            vaux[intbcidx, 0] = bcdict.values()
+            vaux[intbcidx, 0] = list(bcdict.values())
         vaux[visudict['invinds']] = velvec
 
     vxvtxdofs = visudict['vxvtxdofs']
     vyvtxdofs = visudict['vyvtxdofs']
 
-    velfile = file(vfile, 'w')
+    #velfile = file(vfile, 'w')
+    velfile = open(vfile, 'w')
     velfile.write(visudict['vtuheader_v'])
-    for xvtx, yvtx in itertools.izip(vxvtxdofs, vyvtxdofs):
-        velfile.write('{0} {1} {2} '
-                      .format(vaux[xvtx][0], vaux[yvtx][0], 0.))
+    #for xvtx, yvtx in itertools.izip(vxvtxdofs, vyvtxdofs):
+    for xvtx, yvtx in zip(vxvtxdofs, vyvtxdofs):
+        velfile.write(u'{0} {1} {2} '.format(vaux[xvtx][0], vaux[yvtx][0], 0.))
     velfile.write(visudict['vtufooter_v'])
 
     if pvec is not None:
         pvtxdofs = visudict['pvtxdofs']
-        pfile = file(pfile, 'w')
+        #pfile = file(pfile, 'w')
+        pfile = open(pfile, 'w')
         pfile.write(visudict['vtuheader_p'])
         for pval in pvec[pvtxdofs, 0]:
-            pfile.write('{0} '.format(pval))
+            pfile.write(u'{0} '.format(pval))
         pfile.write(visudict['vtufooter_p'])
 
 
 def collect_vtu_files(filelist, pvdfilestr):
 
-    colfile = file(pvdfilestr, 'w')
-    colfile.write('<?xml version="1.0"?>\n' +
-                  '<VTKFile type="Collection" version="0.1"> <Collection>\n')
+    #colfile = file(pvdfilestr, 'w')
+    colfile = open(pvdfilestr, 'w')
+    colfile.write(u'<?xml version="1.0"?>\n<VTKFile type="Collection" version="0.1"> <Collection>\n')
     for tsp, vtufile in enumerate(filelist):
-        dtst = '<DataSet timestep="{0}" part="0" file="{1}"/>'.\
-            format(tsp, vtufile)
+        dtst = u'<DataSet timestep="{0}" part="0" file="{1}"/>'.format(tsp, vtufile)
         colfile.write(dtst)
 
     colfile.write('</Collection> </VTKFile>')

@@ -1,3 +1,4 @@
+from __future__ import print_function 
 import numpy as np
 import scipy.io
 import scipy.sparse as sps
@@ -37,12 +38,12 @@ vfile = 'v__cylinderwake_stst_Re{0}_NV{1}.vtu'.format(Re, NV)
         
 
 # print reynolds number and discretization lvl
-print 'Re           = {0}'.format(Re)
-print 'NV           = {0}'.format(NV)
-print 'Picardsteps  = {0}'.format(npicardstps)
-print 'pfile        = {0}'.format(pfile)
-print 'vfile        = {0}'.format(vfile)
-print '\n'
+print('Re           = {0}'.format(Re))
+print('NV           = {0}'.format(NV))
+print('Picardsteps  = {0}'.format(npicardstps))
+print('pfile        = {0}'.format(pfile))
+print('vfile        = {0}'.format(vfile))
+print('\n')
 
 
 # load the coefficients matrices
@@ -75,28 +76,29 @@ while updnorm > 1e-10:
     cursysmat   = sps.vstack([sps.hstack([A+HL, -J.T]),sps.hstack([J, sps.csc_matrix((NP, NP))])]).tocsc()
     nextvp      = spsla.spsolve(cursysmat, currhs).reshape((NV+NP, 1))
 
-    print 'Iteration step {0} ({1})'.format(stpcount, 'Picard' if picard else 'Newton')
+    print('Iteration step {0} ({1})'.format(stpcount, 'Picard' if picard else 'Newton'))
     nextv       = nextvp[:NV].reshape((NV, 1))
     nextp       = nextvp[NV:].reshape((NP, 1))
     curnseres   = A*nextv + hmat*np.kron(nextv, nextv) - J.T*nextp - fv
-    print 'Norm of nse residual:   {0:e}'.format(np.linalg.norm(curnseres))
+    print('Norm of nse residual:   {0:e}'.format(np.linalg.norm(curnseres)))
     updnorm     = np.linalg.norm(nextv - curv) / np.linalg.norm(nextv)
-    print 'Norm of current update: {0:e}'.format(updnorm)
-    print '\n'
+    print('Norm of current update: {0:e}'.format(updnorm))
+    print('\n')
     curv = nextv
     stpcount += 1
 
 
 # print results
-print '*** Done ***'
-print 'NSE momentum eq residual: {0:e}', np.linalg.norm(curnseres)
+print('*** Done ***')
+print('NSE momentum eq residual: {0:e}'.format(np.linalg.norm(curnseres)))
 resconti = J*nextv - fp
-print 'The conti residual:       {0:e}', np.linalg.norm(resconti)
-print '\n'
+print('The conti residual:       {0:e}'.format(np.linalg.norm(resconti)))
+print('\n')
 
 
 # write paraview
 vu.writevp_paraview(pvec=nextp, velvec=nextv, strtojson=visujsonstr(NV),pfile=pfile, vfile=vfile)
-print '*** for visualization try ***'
-print 'paraview {0}'.format(vfile)
-print 'paraview {0}'.format(pfile)
+print('*** for visualization try ***')
+print('paraview {0}'.format(vfile))
+print('paraview {0}'.format(pfile))
+
