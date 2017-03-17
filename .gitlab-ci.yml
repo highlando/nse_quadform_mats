@@ -1,0 +1,101 @@
+
+before_script: 
+  - "ssh-keyscan -H -p 22 gitlab.mpi-magdeburg.mpg.de >> /root/.ssh/known_hosts"
+  - "git submodule sync"
+  - "git submodule init"
+  - "git submodule update --recursive --init"
+
+stages: 
+  - python2
+
+#------Ubuntu 12.04-------
+
+ubuntu1204-python2: 
+  image: "local:ubuntu-precise-base"
+  only: 
+    - master
+    - code-4-pub
+    - /^behr.*$/
+  script: 
+    - ls -hla
+    - pwd
+    - "chmod u+x ci-scripts/python/ubuntu-python2.sh"
+    - "./ci-scripts/python/ubuntu-python2.sh"
+  stage: python2
+
+
+##------Ubuntu 14.04-------
+#
+#ubuntu1404-full-test: 
+#  image: "local:ubuntu-trusty-base"
+#  only: 
+#    - master
+#    - /^behr.*$/
+#  script: 
+#    - "chmod u+x scripts/gitlab-ci/ubuntu1404-full-test.sh"
+#    - "./scripts/gitlab-ci/ubuntu1404-full-test.sh"
+#  stage: full-test
+#
+#
+##------Ubuntu 16.04-------
+#
+#ubuntu1604-full-test: 
+#  image: "local:ubuntu-xenial-base"
+#  only: 
+#    - master
+#    - /^behr.*$/
+#  script: 
+#    - "chmod u+x scripts/gitlab-ci/ubuntu1604-full-test.sh"
+#    - "./scripts/gitlab-ci/ubuntu1604-full-test.sh"
+#  stage: full-test
+#
+##------Centos 6-------
+#
+#centos6: 
+#  image: "local:centos6-base"
+#  only: 
+#    - master
+#    - /^behr.*$/
+#  script: 
+#    - "chmod u+x scripts/gitlab-ci/centos6.sh"
+#    - "./scripts/gitlab-ci/centos6.sh"
+#  stage: basic-test
+#
+##------Centos 7-------
+#
+#centos7: 
+#  image: "local:centos7-base"
+#  only: 
+#    - master
+#    - /^behr.*$/
+#  script: 
+#    - "chmod u+x scripts/gitlab-ci/centos7.sh"
+#    - "./scripts/gitlab-ci/centos7.sh"
+#  stage: basic-test
+#
+#
+##------OpenSuse 132-------
+#opensuse132: 
+#  image: "local:opensuse-13-2-base"
+#  only: 
+#    - master
+#    - /^behr.*$/
+#  script: 
+#    - "chmod u+x scripts/gitlab-ci/opensuse132.sh"
+#    - "./scripts/gitlab-ci/opensuse132.sh"
+#  stage: basic-test
+#
+#
+##------OpenSuse 421-------
+#
+#opensuse421: 
+#  image: "local:opensuse-42-1-base"
+#  only: 
+#    - master
+#    - /^behr.*$/
+#  script: 
+#    - "chmod u+x scripts/gitlab-ci/opensuse421.sh"
+#    - "./scripts/gitlab-ci/opensuse421.sh"
+#  stage: basic-test
+#
+
