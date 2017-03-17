@@ -254,7 +254,8 @@ def comp_exp_nsbili(problemname='drivencavity', N=10, bccontrol=False,
     # case as all boundaries will be initialized with zero
     # and nonzero values are applied last
     if visu:
-        fstring = mddir+'visualization_' + problemname + '_N{0}.jsn'.format(N)
+        fstring = mddir+'visualization_' + problemname + '_NV{0}.jsn'.\
+            format(NV)
         jsn_vslztn_dct(diribcs=femp['diribcs'], V=femp['V'], Q=femp['Q'],
                        invinds=invinds, N=N, problemname=problemname,
                        fstring=fstring)
@@ -408,9 +409,9 @@ def apply_massinv(M, rhsa, output=None):
 if __name__ == '__main__':
     mddir = '../data/'
     visu = True
-    # comp_exp_nsbili(problemname='drivencavity', N=10, mddir=mddir, visu=visu)
-    # comp_exp_nsbili(problemname='drivencavity', N=20, mddir=mddir, visu=visu)
-    # comp_exp_nsbili(problemname='drivencavity', N=30, mddir=mddir, visu=visu)
+    comp_exp_nsbili(problemname='drivencavity', N=10, mddir=mddir, visu=visu)
+    comp_exp_nsbili(problemname='drivencavity', N=20, mddir=mddir, visu=visu)
+    comp_exp_nsbili(problemname='drivencavity', N=30, mddir=mddir, visu=visu)
     # comp_exp_nsbili(problemname='cylinderwake', N=1, mddir=mddir, Re=80,
     #                 visu=visu)
     # comp_exp_nsbili(problemname='cylinderwake', N=1, mddir=mddir, Re=40,
@@ -422,7 +423,7 @@ if __name__ == '__main__':
     #                 mddir=mddir, bccontrol=True, palpha=1, visu=visu)
     # comp_exp_nsbili(problemname='cylinderwake', N=2,
     #                 mddir=mddir, bccontrol=True, palpha=1, visu=visu)
-    comp_exp_nsbili(problemname='cylinderwake', N=3, compressdata=True,
-                    mddir=mddir, bccontrol=True, palpha=1, visu=visu)
+    # comp_exp_nsbili(problemname='cylinderwake', N=3, compressdata=True,
+    #                 mddir=mddir, bccontrol=True, palpha=1, visu=visu)
     # comp_exp_nsbili(problemname='cylinderwake', N=2, Re=40,
     #                 mddir=mddir, bccontrol=True, palpha=1e-3, visu=visu)

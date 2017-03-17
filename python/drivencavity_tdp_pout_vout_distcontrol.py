@@ -5,6 +5,7 @@ import scipy.sparse.linalg as spsla
 import conv_tensor_utils as ctu
 import visualization_utils as vu
 
+
 # hard coded paths and dictionary for data
 NVdict          = {10: 722, 20: 3042,  30: 6962}
 savedmatsstr    = lambda NV: '../data/drivencavity__mats_NV{1}_Re{0}.mat'.format(1,NV)
