@@ -1,0 +1,45 @@
+function [L1,L2] = linearzd_quadterm(H, linv, hlstr)
+%% LINEARZED_QUADTERM - compute the matrices L1, L2 that represent the linearized convection
+%
+%    H(v, v) ~ L1*v + L2*v - H(linv, linv)
+% 
+% 
+%     Parameters:
+%     
+%     H : (nv, nv*nv) sparse array
+%         the tensor (as a matrix) that evaluates the convection term
+%     linv : (nv, 1)  array
+%         the stat at which the linearization is about
+%     hlstr : str, optional
+%         name of location from where to load or where to store the 
+%         the wanted data, if `None` nothing is loaded or stored, 
+% 
+%     
+
+
+%% check out arguments
+if nargout < 1 || nargout > 2 
+   error('Wrong number of output arguments.\n');
+end
+
+fprintf('assembling hlmat ...\n');
+nv = size(linv,1);
+
+if nargout == 1
+ 
+    
+    if retparts:
+        try:
+            H1L = H * (sps.kron(sps.eye(nv), linv))
+            H2L = H * (sps.kron(linv, sps.eye(nv)))
+        except TypeError:  # for earlier scipys
+            H1L = H * (sps.kron(sps.eye(nv, nv), linv))
+            H2L = H * (sps.kron(linv, sps.eye(nv, nv)))
+        return H1L, H2L
+    else:
+        try:
+            HL = H * (sps.kron(sps.eye(nv), linv) + sps.kron(linv, sps.eye(nv)))
+        except TypeError:  # for earlier scipys
+            HL = H * (sps.kron(sps.eye(nv, nv), linv) + \
+                sps.kron(linv, sps.eye(nv, nv)))
+        return HL

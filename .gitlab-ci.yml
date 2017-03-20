@@ -91,8 +91,8 @@ opensuse421-python2:
     - master
     - /^behr.*$/
   script: 
-    - "chmod u+x scripts/gitlab-ci/opensuse421-python2.sh"
-    - "./scripts/gitlab-ci/opensuse421-python2.sh"
+    - "chmod u+x ci-scripts/python/opensuse421-python2.sh"
+    - "./ci-scripts/python/opensuse421-python2.sh"
   stage: python2
 
 opensuse421-python3: 
@@ -101,7 +101,10 @@ opensuse421-python3:
     - master
     - /^behr.*$/
   script: 
-    - "chmod u+x scripts/gitlab-ci/opensuse421-python3.sh"
-    - "./scripts/gitlab-ci/opensuse421-python3.sh"
+    - "chmod u+x ci-scripts/python/opensuse421-python3.sh"
+    - "./ci-scripts/python/opensuse421-python3.sh"
   stage: python3
+
+
+
 
