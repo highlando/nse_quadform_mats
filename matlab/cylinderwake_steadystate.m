@@ -72,11 +72,10 @@ while updnorm > 1e-10
     nextv       = nextvp(1:NV);
     nextp       = nextvp(NV+1:end);
     
-    %% TODO aendern
     curnseres   = A*nextv + eva_quadterm(hmat,nextv) - J'*nextp - fv;
     fprintf('Norm of nse residual:   %e\n',norm(curnseres));
     updnorm = norm(nextv - curv) / norm(nextv);
-    fprintf('Norm of current update: %e\n',norm(updnorm));
+    fprintf('Norm of current update: %e\n\n\n',norm(updnorm));
     curv = nextv;
     stpcount = stpcount + 1;
 end
@@ -85,12 +84,12 @@ end
 fprintf('*** Done ***\n');
 fprintf('NSE momentum eq residual: %e\n',norm(curnseres));
 resconti = J*nextv - fp;
-fprintf('The conti residual:       %e\n',norm(resconti));
+fprintf('The conti residual:       %e\n\n',norm(resconti));
 
 
 %% write paraview
 %vu.writevp_paraview(pvec=nextp, velvec=nextv, strtojson=visujsonstr(NV),pfile=pfile, vfile=vfile);
 fprintf('*** for visualization try ***\n');
-fprintf('paraview %s',vfile);
-fprintf('paraview %s',pfile);
+fprintf('paraview %s\n',vfile);
+fprintf('paraview %s\n',pfile);
 
