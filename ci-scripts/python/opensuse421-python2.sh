@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # install packages via package manager
-set -e 
+set -ex
 zypper -n install python-devel python-numpy python-scipy
 
 

@@ -4,3 +4,4 @@
 *.mtx
 core
 *.pyc
+*.m~

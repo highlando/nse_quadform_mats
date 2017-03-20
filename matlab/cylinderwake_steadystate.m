@@ -88,7 +88,7 @@ fprintf('The conti residual:       %e\n\n',norm(resconti));
 
 
 %% write paraview
-%vu.writevp_paraview(pvec=nextp, velvec=nextv, strtojson=visujsonstr(NV),pfile=pfile, vfile=vfile);
+writevp_paraview(nextv, nextp, visujsonstr(NV), pfile, vfile);
 fprintf('*** for visualization try ***\n');
 fprintf('paraview %s\n',vfile);
 fprintf('paraview %s\n',pfile);

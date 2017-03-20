@@ -9,7 +9,7 @@ import sys, getopt
 # hard coded paths and dictionary for data
 NVdict          = {10: 722, 20: 3042,  30: 6962}
 savedmatsstr    = lambda NV: '../data/drivencavity__mats_NV{1}_Re{0}.mat'.format(1,NV)
-visujsonstr     = lambda NV : '../data/visualization_drivencavity_N{0}.jsn'.format(NV)
+visujsonstr     = lambda NV : '../data/visualization_drivencavity_NV{0}.jsn'.format(NV)
 
 
 # setup parameters

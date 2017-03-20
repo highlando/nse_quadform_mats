@@ -1,10 +1,3 @@
-from __future__ import print_function 
-import numpy as np
-import json
-import itertools
-from io import open
-
-
 def load_json_dicts(StrToJs):
     fjs = open(StrToJs)
     JsDict = json.load(fjs)
@@ -104,6 +97,7 @@ def writevp_paraview(velvec=None, pvec=None, strtojson=None, visudict=None,
         #jsfile = file(strtojson)
         jsfile = open(strtojson)
         visudict = json.load(jsfile)
+
         vaux = np.zeros((visudict['vdim'], 1))
         # fill in the boundary values
         for bcdict in visudict['bclist']:

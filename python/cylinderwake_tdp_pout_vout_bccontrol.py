@@ -9,7 +9,7 @@ import sys, getopt
 # hard coded paths and dictionary for data
 NVdict          = {1: 5824, 2: 9384,  3: 19512}
 savedmatsstr    = lambda NV: '../data/cylinderwake__mats_NV{1}_Re{0}_bccontrol_palpha{2}.mat'.format(1,NV,1)
-visujsonstr     = lambda NV : '../data/visualization_cylinderwake_N{0}.jsn'.format(NV)
+visujsonstr     = lambda NV : '../data/visualization_cylinderwake_NV{0}.jsn'.format(NV)
 
 
 # setup parameters
