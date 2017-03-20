@@ -33,7 +33,7 @@ vyvtxdofs = visudict.vyvtxdofs;
 
 
 %% read velocity file and write header
-vfid = fopen(vfile);
+vfid = fopen(vfile,'w+');
 if vfid == -1
     error('Cannot open file %s\n', vfile);
 end
@@ -43,7 +43,8 @@ fprintf(vfid,'\n');
 
 %% write velocity
 for i = 1:length(vxvtxdofs)
-    fprintf(vfid,'%e %e %e\n',vaux(vxvtxdofs+1),vaux(vyvtxdofs+1),0.);
+    fprintf('%e %e %e\n',vaux(vxvtxdofs(i)+1),vaux(vyvtxdofs(i)+1),0.);
+    fprintf(vfid,'%e %e %e\n',vaux(vxvtxdofs(i)+1),vaux(vyvtxdofs(i)+1),0.);
 end
 
 %% write footer
@@ -60,7 +61,7 @@ if ~isempty(pvec)
         error('Cannot write pressure pfile is empty\n');
     end
     
-    pfid = fopen(pfile);
+    pfid = fopen(pfile,'w+');
     if pfid==-1
         error('Cannot open file %s\n', pfile);
     end
