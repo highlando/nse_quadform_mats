@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # install packages via package manager
-set -e 
+set -ex
 apt-get update  --yes
 apt-get install --yes python3-dev python3-scipy
 
