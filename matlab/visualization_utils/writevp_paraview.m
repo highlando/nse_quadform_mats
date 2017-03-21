@@ -43,7 +43,6 @@ fprintf(vfid,'\n');
 
 %% write velocity
 for i = 1:length(vxvtxdofs)
-    fprintf('%e %e %e\n',vaux(vxvtxdofs(i)+1),vaux(vyvtxdofs(i)+1),0.);
     fprintf(vfid,'%e %e %e\n',vaux(vxvtxdofs(i)+1),vaux(vyvtxdofs(i)+1),0.);
 end
 
