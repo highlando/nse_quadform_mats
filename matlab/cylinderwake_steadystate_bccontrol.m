@@ -1,5 +1,11 @@
-%% clear all
-clearvars, close all, clc
+function cylinderwake_steadystate_bccontrol(N_, Re_, Picardsteps_, palpha_)
+%% CYLINDERWAKE_STEADYSTATE_BCCONTROL
+%
+%  Calling Sequences:
+%
+%  default  -   cylinderwake_steadystate_bccontrol()
+%               cylinderwake_steadystate_bccontrol(N, Re, Picardsteps, palpha)
+%
 
 
 %% hard coded paths and dictionary for data
@@ -14,6 +20,17 @@ Re          = 40;
 npicardstps = 5;
 palpha      = 1e-3;     % penalty for robin boundary control
 uvec        = [1,-1];   % steady input
+
+
+%% get command line input and overwrite standard paramters if necessary
+if nargin == 4
+    N           = N_;
+    Re          = Re_;
+    npicardstps = Picardsteps_;
+    palpha      = palpha_;
+elseif nargin ~=0
+   error('Unkown Number of input arguments'); 
+end
 
 
 %% visualisation files

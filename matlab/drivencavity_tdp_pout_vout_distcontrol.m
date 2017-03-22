@@ -1,22 +1,23 @@
-function cylinderwake_tdp_pout_vout(N_,Re_,Picardsteps_,t0_,tE_,Nts_)
-%% CYLINDERWAKE_TDP_POUT_VOUT
+function drivencavity_tdp_pout_vout_distcontrol(N_,Re_,Picardsteps_,omega_,t0_,tE_,Nts_)
+%% DRIVENCAVITY_TDP_POUT_VOUT_DISTCONTROL
 %
 %  Calling Sequences:
 %
-%  default  -   cylinderwake_tdp_pout_vout()
-%               cylinderwake_tdp_pout_vout(N, Re, Picardsteps, t0, tE, Nts)
+%  default  -   drivencavity_tdp_pout_vout_distcontrol()
+%               drivencavity_tdp_pout_vout_distcontrol(N, Re, Picardsteps, omega, t0, tE, Nts)
 %
 
 %% hard coded paths and dictionary for data
-NVdict          = [5812, 9356, 19468];
-savedmatsstr    = @(NV) sprintf('%s/data/cylinderwake__mats_NV%d_Re%d.mat',fileparts(pwd),NV,1);
-visujsonstr     = @(NV) sprintf('%s/data/visualization_cylinderwake_NV%d.jsn',fileparts(pwd),NV);
+NVdict          = [722, 3042, 6962];
+savedmatsstr    = @(NV) sprintf('%s/data/drivencavity__mats_NV%d_Re%d.mat',fileparts(pwd),NV,1);
+visujsonstr     = @(NV) sprintf('%s/data/visualization_drivencavity_NV%d.jsn',fileparts(pwd),NV);
 
 
 %% setup standard parameters
-N           = 1;
-Re          = 40;
+N           = 20;
+Re          = 800;
 npicardstps = 5;
+omeg        = 4; % parameter for the frequency of the input signal
 
 
 %% parameters for time stepping
@@ -26,17 +27,18 @@ Nts         = 2^11;
 
 
 %% get command line input and overwrite standard paramters if necessary
-if nargin == 6
+if nargin == 7
     N           = N_;
     Re          = Re_;
     npicardstps = Picardsteps_;
+    omeg        = omega_;
     t0          = t0_;
     tE          = tE_;
     Nts         = Nts_;
 elseif nargin ~=0
    error('Unkown Number of input arguments'); 
 end
-
+ 
 
 %% further parameters
 NV          = NVdict(N);
@@ -46,24 +48,26 @@ trange      = linspace(t0, tE, Nts+1);
 
 %% parameters for results, directories
 rdir        = 'results/';
-vfileprfx   = sprintf('v_tdpcyl_NV%d_Re%d_tE%e_Nts%d',NV, Re, tE, Nts);
-pfileprfx   = sprintf('p_tdpcyl_NV%d_Re%d_tE%e_Nts%d',NV, Re, tE, Nts);
+vfileprfx   = sprintf('v_tdpdrivcav_NV%d_Re%d_tE%e_Nts%d_bccomg%e',NV, Re, tE, Nts, omeg);
+pfileprfx   = sprintf('p_tdpdrivcav_NV%d_Re%d_tE%e_Nts%d_bccomg%e',NV, Re, tE, Nts, omeg);
 voutlist    = cell(1,length(trange));
 poutlist    = cell(1,length(trange));
 vfile       = @(t) sprintf('%s%s__t%e.vtu',rdir,vfileprfx,t);
 pfile       = @(t) sprintf('%s%s__t%e.vtu',rdir,pfileprfx,t);
 vfilelist   = {vfile(trange(1))};
 pfilelist   = {pfile(trange(1))};
-vtikzfile   = sprintf('tikz/v_nsequadtens-N%d-tE%e-Nts%d', N, tE, Nts);
-ptikzfile   = sprintf('tikz/p_nsequadtens-N%d-tE%e-Nts%d', N, tE, Nts);
+vtikzfile   = sprintf('tikz/v_nsequadtens-N%d-tE%e-Nts%d_bccomg%e', N, tE, Nts, omeg);
+ptikzfile   = sprintf('tikz/p_nsequadtens-N%d-tE%e-Nts%d_bccomg%e', N, tE, Nts, omeg);
 
 
 %% print reynolds number and discretization lvl
 fprintf('Re           = %d\n',Re);
 fprintf('NV           = %d\n',NV);
+fprintf('omega        = %e\n',omeg);
 fprintf('Picardsteps  = %d\n',npicardstps);
 fprintf('t0           = %e\n',t0);
 fprintf('tE           = %e\n',tE);
+fprintf('Nts          = %e\n',Nts);
 fprintf('DT           = %e\n',DT);
 fprintf('\n')
 
@@ -72,6 +76,7 @@ fprintf('\n')
 mats    = load(savedmatsstr(NV));
 M       = mats.M;
 A       = 1./Re*mats.A + mats.L1 + mats.L2;
+B       = mats.B;
 J       = mats.J;
 hmat    = mats.H;
 fv      = mats.fv + 1./Re*mats.fv_diff + mats.fv_conv;
@@ -80,6 +85,20 @@ pcmat   = mats.Cp;
 vcmat   = mats.Cv;
 NV      = size(fv,1);
 NP      = size(fp,1);
+
+
+%% Fix the p
+J  =  J(1:end-1, :);
+fp = fp(1:end-1, :);
+
+
+%% restrict it to two dofs in the input
+NU = size(B, 1);
+B  = B(:, 1:NU/2);
+
+
+%% define an input function
+bbcu = @(t) B*[sin(omeg*pi*t/(tE-t0));cos(omeg*pi*t/(tE-t0))];
 
 
 %% factorization of system matrix
@@ -91,7 +110,7 @@ sysmati                     = @(x) sysQ * (sysU \ (sysL \ (sysP * (sysR \ x))));
 
 %% compute stokes solution as initial value
 fprintf('computing Stokes solution to be used as initial value...\n');
-fvstks  = mats.fv + 1./Re*mats.fv_diff;
+fvstks  = mats.fv + 1./Re*mats.fv_diff + bbcu(t0);
 Astks   = 1/Re*mats.A;
 stksrhs = [fvstks; fp];
 stksmat = sparse([[Astks, -J'];[J, sparse(NP, NP)]]);
@@ -109,7 +128,7 @@ fprintf('doing the time loop...\n');
 old_v = stksv;
 
 for k = 1:length(trange)
-    crhsv   = M*old_v + DT*(fv - eva_quadterm(hmat, old_v));
+    crhsv   = M*old_v + DT*(fv - eva_quadterm(hmat, old_v) + bbcu(t));
     crhs    = [crhsv; fp];
     vp_new  = sysmati(crhs);
     old_v   = vp_new(1:NV);
@@ -132,10 +151,6 @@ collect_vtu_files(vfilelist, strcat(vfileprfx,'.pvd'));
 collect_vtu_files(pfilelist, strcat(pfileprfx,'.pvd'));
 
 
-%% write to tikz file
-%plot_prs_outp(voutlist, trange, vtikzfile);
-%plot_prs_outp(poutlist, trange, ptikzfile);
-
-
-
-
+%# write to tikz file
+%vu.plot_prs_outp(outsig=poutlist, tmesh=trange, fignum=222, tikzfile=ptikzfile)
+%vu.plot_prs_outp(outsig=voutlist, tmesh=trange, fignum=123, tikzfile=vtikzfile)

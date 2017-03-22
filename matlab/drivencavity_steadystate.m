@@ -1,5 +1,11 @@
-%% clear all
-clearvars, close all, clc
+function drivencavity_steadystate(N_,Re_,Picardsteps_)
+%% DRIVENCAVITY_STEADYSTATE
+%
+%  Calling Sequences:
+%
+%  default  -   drivencavity_steadystate()
+%               drivencavity_steadystate(N, Re, Picardsteps)
+%
 
 
 %% hard coded paths and dictionary for data
@@ -14,10 +20,19 @@ Re          = 40;
 npicardstps = 5;
 
 
+%% get command line input and overwrite standard paramters if necessary
+if nargin == 3
+    N           = N_;
+    Re          = Re_;
+    npicardstps = Picardsteps_;
+elseif nargin ~=0
+   error('Unkown Number of input arguments'); 
+end
+
 %% visualisation files
 NV    = NVdict(N);
-pfile = sprintf('p__drivencavity_stst_Re%d_NV%d.vtu',Re, NV);
-vfile = sprintf('v__drivencavity_stst_Re%d_NV%d.vtu',Re, NV);
+pfile = sprintf('results/p__drivencavity_stst_Re%d_NV%d.vtu',Re, NV);
+vfile = sprintf('results/v__drivencavity_stst_Re%d_NV%d.vtu',Re, NV);
 
 
 %% print reynolds number and discretization lvl

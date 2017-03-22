@@ -17,3 +17,4 @@ for i = 1 : length(filelist)
 end
 
 fprintf(fid,'</Collection> </VTKFile>');
+fclose(fid);

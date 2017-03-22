@@ -1,5 +1,11 @@
-%% clear all
-clearvars, close all, clc
+function cylinderwake_steadystate(N_,Re_,Picardsteps_)
+%% CYLINDERWAKE_STEADYSTATE
+%
+%  Calling Sequences:
+%
+%  default  -   cylinderwake_steadystate()
+%               cylinderwake_steadystate(N, Re, Picardsteps)
+%
 
 
 %% hard coded paths and dictionary for data
@@ -14,10 +20,20 @@ Re          = 40;
 npicardstps = 5;
 
 
+%% get command line input and overwrite standard paramters if necessary
+if nargin == 3
+    N           = N_;
+    Re          = Re_;
+    npicardstps = Picardsteps_;
+elseif nargin ~=0
+   error('Unkown Number of input arguments'); 
+end
+
+
 %% visualisation files
 NV    = NVdict(N);
-pfile = sprintf('p__cylinderwake_stst_Re%d_NV%d.vtu',Re, NV);
-vfile = sprintf('v__cylinderwake_stst_Re%d_NV%d.vtu',Re, NV);
+pfile = sprintf('results/p__cylinderwake_stst_Re%d_NV%d.vtu',Re, NV);
+vfile = sprintf('results/v__cylinderwake_stst_Re%d_NV%d.vtu',Re, NV);
 
 
 %% print reynolds number and discretization lvl
@@ -93,3 +109,4 @@ fprintf('*** for visualization try ***\n');
 fprintf('paraview %s\n',vfile);
 fprintf('paraview %s\n',pfile);
 
+end
