@@ -31,8 +31,8 @@ for opt, arg in options:
 
 # visualisation files
 NV    = NVdict[N]
-pfile = 'p__drivencavity_stst_Re{0}_NV{1}.vtu'.format(Re, NV)
-vfile = 'v__drivencavity_stst_Re{0}_NV{1}.vtu'.format(Re, NV)
+pfile = 'results/p__drivencavity_stst_Re{0}_NV{1}.vtu'.format(Re, NV)
+vfile = 'results/v__drivencavity_stst_Re{0}_NV{1}.vtu'.format(Re, NV)
 
 
 # print reynolds number and discretization lvl

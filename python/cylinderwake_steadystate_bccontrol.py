@@ -35,8 +35,8 @@ for opt, arg in options:
 
 # visualisation files
 NV    = NVdict[N]
-pfile = 'p__cylinderwake_stst_bccontrol_Re{0}_NV{1}_palpha{2:e}.vtu'.format(Re, NV, palpha)
-vfile = 'v__cylinderwake_stst_bccontrol_Re{0}_NV{1}_palpha{2:e}.vtu'.format(Re, NV, palpha)
+pfile = 'results/p__cylinderwake_stst_bccontrol_Re{0}_NV{1}_palpha{2:e}.vtu'.format(Re, NV, palpha)
+vfile = 'results/v__cylinderwake_stst_bccontrol_Re{0}_NV{1}_palpha{2:e}.vtu'.format(Re, NV, palpha)
 
 
 # print reynolds number and discretization lvl
