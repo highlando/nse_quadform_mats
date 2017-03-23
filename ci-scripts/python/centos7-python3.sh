@@ -14,27 +14,27 @@ cd python
 python3 cylinderwake_steadystate.py
 python3 cylinderwake_steadystate.py --N=1 --Re=50 --Picardsteps=5
 python3 cylinderwake_steadystate.py --N=2 --Re=50 --Picardsteps=5
-python3 cylinderwake_steadystate.py --N=3 --Re=50 --Picardsteps=5
+#python3 cylinderwake_steadystate.py --N=3 --Re=50 --Picardsteps=5
 
 
 # cylinderwake steadystate bccontrol
 python3 cylinderwake_steadystate_bccontrol.py
 python3 cylinderwake_steadystate_bccontrol.py --N=1 --Re=50 --Picardsteps=5 --palpha=1e-4
 python3 cylinderwake_steadystate_bccontrol.py --N=2 --Re=50 --Picardsteps=5 --palpha=1e-4
-python3 cylinderwake_steadystate_bccontrol.py --N=3 --Re=50 --Picardsteps=5 --palpha=1e-4
+#python3 cylinderwake_steadystate_bccontrol.py --N=3 --Re=50 --Picardsteps=5 --palpha=1e-4
 
 
 # cylinderwake tdp pout vout
 python3 cylinderwake_tdp_pout_vout.py --N=1 --Re=50 --Picardsteps=5 --t0=0.0 --tE=1.5 --Nts=4096
 python3 cylinderwake_tdp_pout_vout.py --N=2 --Re=50 --Picardsteps=5 --t0=0.0 --tE=1.5 --Nts=4096
-python3 cylinderwake_tdp_pout_vout.py --N=3 --Re=50 --Picardsteps=5 --t0=0.0 --tE=1.5 --Nts=4096
+#python3 cylinderwake_tdp_pout_vout.py --N=3 --Re=50 --Picardsteps=5 --t0=0.0 --tE=1.5 --Nts=4096
 
 
 # cylinderwake tdp pout vout bccontrol
 python3 cylinderwake_tdp_pout_vout_bccontrol.py
 python3 cylinderwake_tdp_pout_vout_bccontrol.py --N=1 --Re=50 --Picardsteps=5 --palpha=1e-4 --omega=3.5 --t0=0.0 --tE=1.5 --Nts=4096
 python3 cylinderwake_tdp_pout_vout_bccontrol.py --N=2 --Re=50 --Picardsteps=5 --palpha=1e-4 --omega=3.5 --t0=0.0 --tE=1.5 --Nts=4096
-python3 cylinderwake_tdp_pout_vout_bccontrol.py --N=3 --Re=50 --Picardsteps=5 --palpha=1e-4 --omega=3.5 --t0=0.0 --tE=1.5 --Nts=4096
+#python3 cylinderwake_tdp_pout_vout_bccontrol.py --N=3 --Re=50 --Picardsteps=5 --palpha=1e-4 --omega=3.5 --t0=0.0 --tE=1.5 --Nts=4096
 
 
 # drivencavity steadystate
@@ -55,7 +55,7 @@ python3 drivencavity_tdp_pout_vout_distcontrol.py --N=30 --Re=500 --Picardsteps=
 python3 stokes_ss.py
 python3 stokes_ss.py --N=1 --RE=50 --Picardsteps=5 
 python3 stokes_ss.py --N=2 --RE=50 --Picardsteps=5 
-python3 stokes_ss.py --N=3 --RE=50 --Picardsteps=5 
+#python3 stokes_ss.py --N=3 --RE=50 --Picardsteps=5 
 
 # test units
 python3 test_units.py
