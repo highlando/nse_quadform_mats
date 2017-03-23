@@ -133,8 +133,8 @@ collect_vtu_files(pfilelist, strcat(pfileprfx,'.pvd'));
 
 
 %% write to tikz file
-%plot_prs_outp(voutlist, trange, vtikzfile);
-%plot_prs_outp(poutlist, trange, ptikzfile);
+plot_prs_outp(voutlist, trange, vtikzfile);
+plot_prs_outp(poutlist, trange, ptikzfile);
 
 
 

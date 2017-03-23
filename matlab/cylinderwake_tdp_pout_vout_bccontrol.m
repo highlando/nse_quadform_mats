@@ -145,7 +145,6 @@ end
 collect_vtu_files(vfilelist, strcat(vfileprfx,'.pvd'));
 collect_vtu_files(pfilelist, strcat(pfileprfx,'.pvd'));
 
-
-%vu.plot_prs_outp(outsig=poutlist, tmesh=trange, tikzfile=ptikzfile)
-%vu.plot_prs_outp(outsig=voutlist, tmesh=trange, tikzfile=vtikzfile)
-
+%% write to tikz file
+plot_prs_outp(poutlist, trange, ptikzfile);
+plot_prs_outp(voutlist, trange, vtikzfile);
