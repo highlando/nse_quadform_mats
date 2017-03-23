@@ -46,5 +46,5 @@ drivencavity_tdp_pout_vout_distcontrol(10, 500, 5, 3.5, 0.0, 1.5, 4096);
 %% cylinderwake stokes
 stokes_ss()
 stokes_ss(1, 50, 5); 
-stokes_ss(2, 50, 5): 
+stokes_ss(2, 50, 5);
 stokes_ss(3, 50, 5); 

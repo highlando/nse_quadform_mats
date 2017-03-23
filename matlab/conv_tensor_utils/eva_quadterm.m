@@ -13,7 +13,6 @@ NV = size(v,1);
 hvv = zeros(NV, 1);
 
 for k = 1:length(v)
-    hviv = H(:,(k-1)*NV+1:k*NV)*(v(k)*v);
-    hvv = hvv + hviv;
+    hvv = hvv + H(:,(k-1)*NV+1:k*NV)*(v(k)*v);
 end
    
