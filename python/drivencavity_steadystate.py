@@ -35,6 +35,11 @@ pfile = 'results/p__drivencavity_stst_Re{0}_NV{1}.vtu'.format(Re, NV)
 vfile = 'results/v__drivencavity_stst_Re{0}_NV{1}.vtu'.format(Re, NV)
 
 
+#create dir if not exists
+if not os.path.exists('results'):
+    os.makedirs('results')
+
+
 # print reynolds number and discretization lvl
 print('Re           = {0}'.format(Re))
 print('NV           = {0}'.format(NV))

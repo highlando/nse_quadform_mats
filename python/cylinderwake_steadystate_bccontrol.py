@@ -39,6 +39,11 @@ pfile = 'results/p__cylinderwake_stst_bccontrol_Re{0}_NV{1}_palpha{2:e}.vtu'.for
 vfile = 'results/v__cylinderwake_stst_bccontrol_Re{0}_NV{1}_palpha{2:e}.vtu'.format(Re, NV, palpha)
 
 
+#create dir if not exists
+if not os.path.exists('results'):
+    os.makedirs('results')
+
+
 # print reynolds number and discretization lvl
 print('Re           = {0}'.format(Re))
 print('NV           = {0}'.format(NV))

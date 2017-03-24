@@ -67,6 +67,14 @@ ptikzfile   = 'tikz/p_nsequadtens-N{0}-tE{1}-Nts{2}-bccomg{3}'.format(N, tE, Nts
 vtikzfile   = 'tikz/v_nsequadtens-N{0}-tE{1}-Nts{2}-bccomg{3}'.format(N, tE, Nts, omeg)
 
 
+#create dir if not exists
+if not os.path.exists('results'):
+    os.makedirs('results')
+
+if not os.path.exists('tikz'):
+    os.makedirs('tikz')
+
+
 # print reynolds number, discretization lvl, and other params
 print('Re       = {0}'.format(Re))
 print('NV       = {0}'.format(NV))
