@@ -2,7 +2,7 @@ import numpy as np
 import scipy.io
 import scipy.sparse as sps
 import scipy.sparse.linalg as spsla
-import sys, getopt
+import sys, getopt, os
 
 
 # hard coded paths and dictionary for data

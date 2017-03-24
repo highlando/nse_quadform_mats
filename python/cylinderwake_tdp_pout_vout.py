@@ -4,7 +4,7 @@ import scipy.sparse as sps
 import scipy.sparse.linalg as spsla
 import conv_tensor_utils as ctu
 import visualization_utils as vu
-import sys, getopt
+import sys, getopt, os
 
 # hard coded paths and dictionary for data
 NVdict          = {1: 5812, 2: 9356,  3: 19468}
