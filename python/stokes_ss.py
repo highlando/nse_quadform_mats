@@ -69,6 +69,7 @@ print('*** Done ***')
 print('The Stokes momentum eq residual: {0:e}'.format(np.linalg.norm(resstksmom)))
 print('The conti residual:              {0:e}'.format(np.linalg.norm(resconti)))
 
+mats    = scipy.io.loadmat('../data/cylinderwake__mats_NV{1}_Re{0}.mat'.format(Re, NV))
 vssstks = mats['v_ss_stokes']
 pssstks = mats['p_ss_stokes']
  
