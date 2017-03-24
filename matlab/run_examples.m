@@ -1,5 +1,5 @@
 %% clear
-clearvars, close all, clc
+clear all, close all, clc
 
 %% cylinderwake steadystate
 cylinderwake_steadystate();

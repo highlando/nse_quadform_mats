@@ -1,5 +1,5 @@
 %% clear all
-clearvars, close all, clc
+clear all, close all, clc
 
 
 %% hard coded paths and dictionary for data
