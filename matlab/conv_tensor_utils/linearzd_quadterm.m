@@ -28,7 +28,6 @@ assert(isvector(linv),'linv is no vector.');
 fprintf('assembling hlmat ...\n');
 nv = size(linv,1);
 
-
 %% perform L1 = H * sparse((kron(speye(nv), linv)));
 slinv = sparse(linv);
 for k = 1:nv
