@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # install packages via package manager
-set -e 
+set -ex
 zypper -n install python3-devel python3-numpy python3-scipy
 
 

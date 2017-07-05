@@ -10,7 +10,7 @@ import sys, getopt
 
 # hard coded paths and dictionary for data
 NVdict          = {1: 5812, 2: 9356,  3: 19468}
-savedmatsstr    = lambda NV: '../data/cylinderwake__mats_NV{1}_Re{0}.mat'.format(1,NV)
+savedmatsstr    = lambda NV : '../data/cylinderwake__mats_NV{1}_Re{0}.mat'.format(1,NV)
 visujsonstr     = lambda NV : '../data/visualization_cylinderwake_NV{0}.jsn'.format(NV)
 
 
@@ -33,8 +33,8 @@ for opt, arg in options:
 
 # visualisation files
 NV    = NVdict[N]
-pfile = 'p__cylinderwake_stst_Re{0}_NV{1}.vtu'.format(Re, NV)
-vfile = 'v__cylinderwake_stst_Re{0}_NV{1}.vtu'.format(Re, NV)
+pfile = 'results/p__cylinderwake_stst_Re{0}_NV{1}.vtu'.format(Re, NV)
+vfile = 'results/v__cylinderwake_stst_Re{0}_NV{1}.vtu'.format(Re, NV)
         
 
 # print reynolds number and discretization lvl
@@ -64,22 +64,22 @@ curvp       = np.zeros((NV+NP, 1))
 stpcount    = 0
 
 while updnorm > 1e-10:
-    picard = True if stpcount < npicardstps else False
-
+    
+    H1k, H2k    = ctu.linearzd_quadterm(hmat, curv, retparts=True)
+    picard      = stpcount < npicardstps
     if picard:
         currhs = np.vstack([fv, fp])
+        HL     = H1k
     else:
-        currhs = np.vstack([fv+hmat*np.kron(curv, curv), fp])
-
-    H1k, H2k    = ctu.linearzd_quadterm(hmat, curv, retparts=True)
-    HL          = H1k if picard else H1k+H2k
+        currhs = np.vstack([fv+ctu.eva_quadterm(hmat,curv), fp])
+        HL     = H1k + H2k
     cursysmat   = sps.vstack([sps.hstack([A+HL, -J.T]),sps.hstack([J, sps.csc_matrix((NP, NP))])]).tocsc()
     nextvp      = spsla.spsolve(cursysmat, currhs).reshape((NV+NP, 1))
 
     print('Iteration step {0} ({1})'.format(stpcount, 'Picard' if picard else 'Newton'))
     nextv       = nextvp[:NV].reshape((NV, 1))
     nextp       = nextvp[NV:].reshape((NP, 1))
-    curnseres   = A*nextv + hmat*np.kron(nextv, nextv) - J.T*nextp - fv
+    curnseres   = A*nextv + ctu.eva_quadterm(hmat,nextv) - J.T*nextp - fv
     print('Norm of nse residual:   {0:e}'.format(np.linalg.norm(curnseres)))
     updnorm     = np.linalg.norm(nextv - curv) / np.linalg.norm(nextv)
     print('Norm of current update: {0:e}'.format(updnorm))
@@ -101,4 +101,5 @@ vu.writevp_paraview(pvec=nextp, velvec=nextv, strtojson=visujsonstr(NV),pfile=pf
 print('*** for visualization try ***')
 print('paraview {0}'.format(vfile))
 print('paraview {0}'.format(pfile))
+
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # install packages via package manager
-set -e 
+set -ex 
 yum makecache fast
 yum install -y scipy numpy
 
