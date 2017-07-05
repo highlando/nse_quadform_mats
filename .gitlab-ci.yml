@@ -8,6 +8,7 @@ before_script:
 stages: 
   - python2
   - python3
+  - octave  
 
 #------Ubuntu 14.04-------
 
@@ -33,6 +34,17 @@ ubuntu1404-python3:
     - "./ci-scripts/python/ubuntu-python3.sh"
   stage: python3
 
+ubuntu1404-octave: 
+  image: "local:ubuntu-trusty-base"
+  only: 
+    - master
+    - code-4-pub
+    - /^behr.*$/
+  script: 
+    - "chmod u+x ci-scripts/octave/ubuntu-oct.sh"
+    - "./ci-scripts/octave/ubuntu-oct.sh"
+  stage: octave
+
 #------Ubuntu 16.04-------
 
 ubuntu1604-python2: 
@@ -57,6 +69,16 @@ ubuntu1604-python3:
     - "./ci-scripts/python/ubuntu-python3.sh"
   stage: python3
 
+ubuntu1604-octave: 
+  image: "local:ubuntu-xenial-base"
+  only: 
+    - master
+    - code-4-pub
+    - /^behr.*$/
+  script: 
+    - "chmod u+x ci-scripts/octave/ubuntu-oct.sh"
+    - "./ci-scripts/octave/ubuntu-oct.sh"
+  stage: octave
 
 #------Centos -------
 
@@ -82,6 +104,16 @@ centos7-python3:
     - "./ci-scripts/python/centos7-python3.sh"
   stage: python3
 
+centos7-octave: 
+  image: "local:centos7-base"
+  only: 
+    - master
+    - code-4-pub
+    - /^behr.*$/
+  script: 
+    - "chmod u+x ci-scripts/octave/centos7-oct.sh"
+    - "./ci-scripts/octave/centos7-oct.sh"
+  stage: octave
 
 #------Opensuse421 -------
 
@@ -106,5 +138,14 @@ opensuse421-python3:
   stage: python3
 
 
-
+opensuse421-octave: 
+  image: "local:opensuse-42-1-base"
+  only: 
+    - master
+    - code-4-pub
+    - /^behr.*$/
+  script: 
+    - "chmod u+x ci-scripts/octave/opensuse421-oct.sh"
+    - "./ci-scripts/octave/opensuse421-oct.sh"
+  stage: octave
 

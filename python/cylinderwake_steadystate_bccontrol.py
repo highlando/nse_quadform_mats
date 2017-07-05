@@ -4,7 +4,7 @@ import scipy.sparse as sps
 import scipy.sparse.linalg as spsla
 import conv_tensor_utils as ctu
 import visualization_utils as vu
-import sys, getopt
+import sys, getopt, os
 
 # hard coded paths and dictionary for data
 NVdict          = {1: 5824, 2: 9384,  3: 19512}
@@ -37,6 +37,11 @@ for opt, arg in options:
 NV    = NVdict[N]
 pfile = 'results/p__cylinderwake_stst_bccontrol_Re{0}_NV{1}_palpha{2:e}.vtu'.format(Re, NV, palpha)
 vfile = 'results/v__cylinderwake_stst_bccontrol_Re{0}_NV{1}_palpha{2:e}.vtu'.format(Re, NV, palpha)
+
+
+#create dir if not exists
+if not os.path.exists('results'):
+    os.makedirs('results')
 
 
 # print reynolds number and discretization lvl

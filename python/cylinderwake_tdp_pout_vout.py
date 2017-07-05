@@ -4,7 +4,7 @@ import scipy.sparse as sps
 import scipy.sparse.linalg as spsla
 import conv_tensor_utils as ctu
 import visualization_utils as vu
-import sys, getopt
+import sys, getopt, os
 
 # hard coded paths and dictionary for data
 NVdict          = {1: 5812, 2: 9356,  3: 19468}
@@ -59,6 +59,14 @@ vfilelist   = [vfile(trange[0])]
 pfilelist   = [pfile(trange[0])]
 ptikzfile   = 'tikz/p_nsequadtens-N{0}-tE{1}-Nts{2}'.format(N, tE, Nts)
 vtikzfile   = 'tikz/v_nsequadtens-N{0}-tE{1}-Nts{2}'.format(N, tE, Nts)
+
+
+#create dir if not exists
+if not os.path.exists('results'):
+    os.makedirs('results')
+
+if not os.path.exists('tikz'):
+    os.makedirs('tikz')
 
 
 # print reynolds number, discretization lvl, and other params
