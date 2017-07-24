@@ -15,7 +15,6 @@ visujsonstr     = lambda NV : '../data/visualization_cylinderwake_NV{0}.jsn'.for
 # setup parameters
 N           = 1
 Re          = 40
-npicardstps = 5
 
 
 # parameters for time stepping
@@ -26,19 +25,17 @@ Nts         = 2**11
 
 # get command line input and overwrite standard paramters if necessary
 options, rest = getopt.getopt(sys.argv[1:], '',['N=', 'Re=', 'Picardsteps=', 't0=', 'tE=', 'Nts='])
-for opt, arg in options: 
+for opt, arg in options:
     if opt == '--N':
         N = int(arg)
     elif opt == '--Re':
         Re = int(arg)
-    elif opt == '--Picardsteps':
-        npicardstps = int(arg)
     elif opt == '--t0':
         t0 = float(arg)
     elif opt == '--tE':
         tE = float(arg)
     elif opt == '--Nts':
-        Nts == int(arg)
+        Nts = int(arg)
 
 
 # further parameters
@@ -64,7 +61,6 @@ vtikzfile   = 'tikz/v_nsequadtens-N{0}-tE{1}-Nts{2}'.format(N, tE, Nts)
 # print reynolds number, discretization lvl, and other params
 print('Re           = {0}'.format(Re))
 print('NV           = {0}'.format(NV))
-print('Picardsteps  = {0}'.format(npicardstps))
 print('t0           = {0}'.format(t0))
 print('tE           = {0}'.format(tE))
 print('Nts          = {0}'.format(Nts))
@@ -132,7 +128,3 @@ vu.collect_vtu_files(pfilelist, pfileprfx+'.pvd')
 # write to tikz file
 vu.plot_prs_outp(outsig=poutlist, tmesh=trange, tikzfile=ptikzfile)
 vu.plot_prs_outp(outsig=voutlist, tmesh=trange, tikzfile=vtikzfile)
-
-
-
-
