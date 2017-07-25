@@ -4,3 +4,5 @@
 *.mtx
 core
 *.pyc
+*.m~
+octave-workspace

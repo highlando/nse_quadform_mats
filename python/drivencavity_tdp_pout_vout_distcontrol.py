@@ -4,12 +4,12 @@ import scipy.sparse as sps
 import scipy.sparse.linalg as spsla
 import conv_tensor_utils as ctu
 import visualization_utils as vu
-
+import sys, getopt, os
 
 # hard coded paths and dictionary for data
 NVdict          = {10: 722, 20: 3042,  30: 6962}
 savedmatsstr    = lambda NV: '../data/drivencavity__mats_NV{1}_Re{0}.mat'.format(1,NV)
-visujsonstr     = lambda NV : '../data/visualization_drivencavity_N{0}.jsn'.format(NV)
+visujsonstr     = lambda NV : '../data/visualization_drivencavity_NV{0}.jsn'.format(NV)
 
 
 # setup parameters
@@ -62,6 +62,14 @@ vfilelist   = [vfile(trange[0])]
 pfilelist   = [pfile(trange[0])]
 ptikzfile   = 'tikz/p_nsequadtens-N{0}-tE{1}-Nts{2}-bccomg{3}'.format(N, tE, Nts, omeg)
 vtikzfile   = 'tikz/v_nsequadtens-N{0}-tE{1}-Nts{2}-bccomg{3}'.format(N, tE, Nts, omeg)
+
+
+#create dir if not exists
+if not os.path.exists('results'):
+    os.makedirs('results')
+
+if not os.path.exists('tikz'):
+    os.makedirs('tikz')
 
 
 # print reynolds number, discretization lvl, and other params

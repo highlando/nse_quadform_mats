@@ -104,7 +104,6 @@ def writevp_paraview(velvec=None, pvec=None, strtojson=None, visudict=None,
         #jsfile = file(strtojson)
         jsfile = open(strtojson)
         visudict = json.load(jsfile)
-
         vaux = np.zeros((visudict['vdim'], 1))
         # fill in the boundary values
         for bcdict in visudict['bclist']:
@@ -120,6 +119,7 @@ def writevp_paraview(velvec=None, pvec=None, strtojson=None, visudict=None,
     velfile.write(visudict['vtuheader_v'])
     #for xvtx, yvtx in itertools.izip(vxvtxdofs, vyvtxdofs):
     for xvtx, yvtx in zip(vxvtxdofs, vyvtxdofs):
+        #print(u'{0} {1} {2} '.format(vaux[xvtx][0], vaux[yvtx][0], 0.))
         velfile.write(u'{0} {1} {2} '.format(vaux[xvtx][0], vaux[yvtx][0], 0.))
     velfile.write(visudict['vtufooter_v'])
 
