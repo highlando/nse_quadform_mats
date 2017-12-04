@@ -142,4 +142,4 @@ def collect_vtu_files(filelist, pvdfilestr):
         dtst = u'<DataSet timestep="{0}" part="0" file="{1}"/>'.format(tsp, vtufile)
         colfile.write(dtst)
 
-    colfile.write('</Collection> </VTKFile>')
+    colfile.write(u'</Collection> </VTKFile>')

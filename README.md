@@ -61,7 +61,7 @@ The purpose, the concepts and the theoretical background of the code are laid ou
 This repo is a snapshot of `gitlab` which is under continuous development. To file or fix a bug or to request or add new features, please refer to there. 
 
 ### License
-MIT?? CCby??
+MIT
 
 ### Cite it
 To acknowledge the use of the code or the data, please refer to the techreport
