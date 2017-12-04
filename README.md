@@ -8,7 +8,7 @@ This repo contains the data and example code to simulate incompressible flows wi
 
 ### Tell me more
 
-Please see the techreport.
+Please see the techreport [arxiv:1707.08711](https://arxiv.org/abs/1707.08711).
 
 ### Run the code
 
@@ -53,7 +53,7 @@ paraview results/p__cylinderwake_stst_Re40_NV5812.vtu
 
 ### Example Outputs
 
-See the techreport.
+Please see the techreport [arxiv:1707.08711](https://arxiv.org/abs/1707.08711).
 
 ### Support
 The purpose, the concepts and the theoretical background of the code are laid out in the techreport. Feel free to contact the authors to discuss any conceptual issues.
