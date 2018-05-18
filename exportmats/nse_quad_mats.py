@@ -16,13 +16,13 @@ dolfin.parameters.linear_algebra_backend = 'Eigen'
 
 
 def comp_exp_nsbili(problemname='drivencavity', N=10, bccontrol=False,
-                    Re=1, palpha=1,
+                    Re=1, palpha=1, scheme='TH',
                     mddir='pathtodatastorage', compressdata=True, visu=False):
 
     # the Reynoldsnumber will be multiplied to the matrices later
 
     femp, stokesmatsc, rhsd_vfrc, rhsd_stbc = \
-        dnsps.get_sysmats(problem=problemname, N=N, Re=Re,
+        dnsps.get_sysmats(problem=problemname, N=N, Re=Re, scheme=scheme,
                           bccontrol=bccontrol, ppin=None)
 
     invinds = femp['invinds']
@@ -66,12 +66,14 @@ def comp_exp_nsbili(problemname='drivencavity', N=10, bccontrol=False,
                               **soldict)
     v_ss_nse, p_ss_nse = vp_ss_nse[:NV], vp_ss_nse[NV:]
 
-    manual_paraview_data(vvec=v_ss_nse, V=femp['V'], invinds=invinds,
-                         diribcs=femp['diribcs'], fstr='nsesstest')
+    if visu:
+        manual_paraview_data(vvec=v_ss_nse, V=femp['V'], invinds=invinds,
+                             diribcs=femp['diribcs'], fstr='nsesstest')
 
     # #######################
 
-    data_prfx = problemname  # + '__noRe__'
+    schmstr = '_' + scheme if scheme is not None else ''
+    data_prfx = problemname + schmstr  # + '__noRe__'
     NU, NY = 3, 4
 
     # specify in what spatial direction Bu changes. The remaining is constant
@@ -99,9 +101,9 @@ def comp_exp_nsbili(problemname='drivencavity', N=10, bccontrol=False,
     try:
         b_mat = dou.load_spa(mddir + contsetupstr + '__b_mat')
         u_masmat = dou.load_spa(mddir + contsetupstr + '__u_masmat')
-        print 'loaded `b_mat`'
+        print('loaded `b_mat`')
     except IOError:
-        print 'computing `b_mat`...'
+        print('computing `b_mat`...')
         b_mat, u_masmat = cou.get_inp_opa(cdcoo=femp['cdcoo'], V=femp['V'],
                                           NU=NU, xcomp=uspacedep)
         dou.save_spa(b_mat, mddir + contsetupstr + '__b_mat')
@@ -109,9 +111,9 @@ def comp_exp_nsbili(problemname='drivencavity', N=10, bccontrol=False,
     try:
         mc_mat = dou.load_spa(mddir + contsetupstr + '__mc_mat')
         y_masmat = dou.load_spa(mddir + contsetupstr + '__y_masmat')
-        print 'loaded `c_mat`'
+        print('loaded `c_mat`')
     except IOError:
-        print 'computing `c_mat`...'
+        print('computing `c_mat`...')
         mc_mat, y_masmat = cou.get_mout_opa(odcoo=femp['odcoo'],
                                             V=femp['V'], NY=NY)
         dou.save_spa(mc_mat, mddir + contsetupstr + '__mc_mat')
@@ -197,9 +199,9 @@ def comp_exp_nsbili(problemname='drivencavity', N=10, bccontrol=False,
         hstr = hstr + '__bccontrol'
     try:
         hmat = dou.load_spa(hstr)
-        print 'loaded `hmat`'
+        print('loaded `hmat`')
     except IOError:
-        print 'assembling hmat ...'
+        print('assembling hmat ...')
         hmat = dts.ass_convmat_asmatquad(W=femp['V'], invindsw=invinds)
         dou.save_spa(hmat, hstr)
 
@@ -249,7 +251,7 @@ def comp_exp_nsbili(problemname='drivencavity', N=10, bccontrol=False,
         matssstr = matssstr + '_bccontrol_palpha{0}'.format(palpha)
     scipy.io.savemat(mddir + data_prfx + matssstr, savematdict,
                      do_compression=compressdata)
-    print 'saved mats to: ' + mddir + data_prfx + matssstr
+    print('saved mats to: ' + mddir + data_prfx + matssstr)
     # NOTE: no case distinction between boundary controlled and uncontrolled
     # case as all boundaries will be initialized with zero
     # and nonzero values are applied last
@@ -280,14 +282,15 @@ def get_vtx_dofs(V, whichdim=0):
 
     # For check: the dof values at vertices match those
     # extracted from the array
-    vertex_indices, vertex_dofs = map(list, zip(*vertex_2_dof.iteritems()))
+    vertex_indices, vertex_dofs = list(map(list,
+                                       list(zip(*iter(vertex_2_dof.items())))))
 
     return vertex_dofs
 
 
 def manual_paraview_data(vvec=None, V=None, invinds=None, diribcs=None,
                          fstr=None):
-    import itertools
+    # import itertools
 
     # vfun = dolfin.Function(V)
     if diribcs is None:
@@ -297,18 +300,18 @@ def manual_paraview_data(vvec=None, V=None, invinds=None, diribcs=None,
         # fill in the boundary values
         for bc in diribcs:
             bcdict = bc.get_boundary_values()
-            vaux[bcdict.keys(), 0] = bcdict.values()
+            vaux[list(bcdict.keys()), 0] = list(bcdict.values())
         vaux[invinds] = vvec
 
     vxvtxdofs = get_vtx_dofs(V, whichdim=0)  # the x-dims
     vyvtxdofs = get_vtx_dofs(V, whichdim=1)  # the y-dims
 
     if fstr is None:
-        for xvtx, yvtx in itertools.izip(vxvtxdofs, vyvtxdofs):
-            print vaux[xvtx], vaux[yvtx], 0.
+        for xvtx, yvtx in zip(vxvtxdofs, vyvtxdofs):
+            print(vaux[xvtx], vaux[yvtx], 0.)
     else:
         wfile = file(fstr, 'w')
-        for xvtx, yvtx in itertools.izip(vxvtxdofs, vyvtxdofs):
+        for xvtx, yvtx in zip(vxvtxdofs, vyvtxdofs):
             wfile.write('{0} {1} {2} '
                         .format(vaux[xvtx][0], vaux[yvtx][0], 0.))
 
@@ -358,7 +361,7 @@ def jsn_vslztn_dct(diribcs=None, V=None, N=None, invinds=None,
                   vyvtxdofs=vyvtxdofs, vxvtxdofs=vxvtxdofs, pvtxdofs=pvtxdofs)
     jsfile = open(fstring, mode='w')
     jsfile.write(json.dumps(vsldct))
-    print 'Visualization data dumped to json file: ', fstring
+    print('Visualization data dumped to json file: ', fstring)
 
 
 def apply_massinv(M, rhsa, output=None):
@@ -409,18 +412,26 @@ def apply_massinv(M, rhsa, output=None):
 if __name__ == '__main__':
     mddir = '../data/'
     visu = True
-    comp_exp_nsbili(problemname='drivencavity', N=10, mddir=mddir, visu=visu)
-    comp_exp_nsbili(problemname='drivencavity', N=20, mddir=mddir, visu=visu)
-    comp_exp_nsbili(problemname='drivencavity', N=30, mddir=mddir, visu=visu)
+    # comp_exp_nsbili(problemname='drivencavity', N=10, mddir=mddir, visu=visu)
+    # comp_exp_nsbili(problemname='drivencavity', N=20, mddir=mddir, visu=visu)
+    # comp_exp_nsbili(problemname='drivencavity', N=30, mddir=mddir, visu=visu)
     # comp_exp_nsbili(problemname='cylinderwake', N=1, mddir=mddir, Re=80,
     #                 visu=visu)
-    # comp_exp_nsbili(problemname='cylinderwake', N=1, mddir=mddir, Re=40,
+    # comp_exp_nsbili(problemname='cylinderwake', N=0, mddir=mddir, Re=40,
     #                 visu=visu)
+    # comp_exp_nsbili(problemname='cylinderwake', scheme='CR',
+    #                 N=0, mddir=mddir, visu=False)
+    # comp_exp_nsbili(problemname='cylinderwake', scheme='CR',
+    #                 N=0, mddir=mddir, bccontrol=True, visu=False)
+    # comp_exp_nsbili(problemname='cylinderwake', scheme='TH',
+    #                 N=0, mddir=mddir, bccontrol=True, visu=False)
+    # comp_exp_nsbili(problemname='cylinderwake', scheme='TH',
+    #                 N=0, mddir=mddir, visu=False)
     # comp_exp_nsbili(problemname='cylinderwake', N=1, mddir=mddir, visu=visu)
     # comp_exp_nsbili(problemname='cylinderwake', N=2, mddir=mddir, visu=visu)
     # comp_exp_nsbili(problemname='cylinderwake', N=3, mddir=mddir, visu=visu)
-    # comp_exp_nsbili(problemname='cylinderwake', N=1,
-    #                 mddir=mddir, bccontrol=True, palpha=1, visu=visu)
+    comp_exp_nsbili(problemname='cylinderwake', N=2,
+                    mddir=mddir, bccontrol=True, palpha=1, visu=False)
     # comp_exp_nsbili(problemname='cylinderwake', N=2,
     #                 mddir=mddir, bccontrol=True, palpha=1, visu=visu)
     # comp_exp_nsbili(problemname='cylinderwake', N=3, compressdata=True,

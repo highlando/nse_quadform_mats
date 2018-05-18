@@ -6,16 +6,24 @@ import conv_tensor_utils as ctu
 import visualization_utils as vu
 import sys, getopt, os
 
-# hard coded paths and dictionary for data
-NVdict          = {1: 5812, 2: 9356,  3: 19468}
-savedmatsstr    = lambda NV: '../data/cylinderwake__mats_NV{1}_Re{0}.mat'.format(1,NV)
-visujsonstr     = lambda NV : '../data/visualization_cylinderwake_NV{0}.jsn'.format(NV)
-
 
 # setup parameters
-N           = 1
-Re          = 40
+N           = 0
+Re          = 20
+scheme      = 'TH'
 
+
+# hard coded paths and dictionary for data
+if scheme is 'TH':
+    NVdict          = {0: 3022, 1: 5812, 2: 9356,  3: 19468}
+    visujsonstr     = lambda NV : '../data/visualization_cylinderwake_NV{0}.jsn'.format(NV)
+if scheme is 'CR':
+    NVdict          = {0: 2272, 1: 5812, 2: 9356,  3: 19468}
+    visujsonstr     = ''
+
+paraoutput = False
+
+savedmatsstr    = lambda NV: '../data/cylinderwake' + scheme + '__mats_NV{1}_Re{0}.mat'.format(1,NV)
 
 # parameters for time stepping
 t0          = 0.
@@ -106,7 +114,8 @@ stksv   = stksvp[:NV].reshape((NV, 1))
 stksp   = stksvp[NV:].reshape((NP, 1))
 
 # Preparing for the output
-vu.writevp_paraview(velvec=stksv, pvec=stksp, vfile=vfile(trange[0]), pfile=pfile(trange[0]), strtojson=visujsonstr(NV))
+if paraoutput:
+    vu.writevp_paraview(velvec=stksv, pvec=stksp, vfile=vfile(trange[0]), pfile=pfile(trange[0]), strtojson=visujsonstr(NV))
 
 
 # time stepping
@@ -122,7 +131,7 @@ for k, t in enumerate(trange):
 
     poutlist.append((pcmat*p)[0][0])
     voutlist.append((vcmat*old_v).flatten())
-    if np.mod(k, round(Nts/10)) == 0:
+    if np.mod(k, round(Nts/10)) == 0 and paraoutput:
         print('timestep {0:4d}/{1}, t={2:f}, |v|={3:e}'.format(k, Nts, t, np.linalg.norm(old_v)))
         vu.writevp_paraview(velvec=old_v, pvec=p, vfile=vfile(t), pfile=pfile(t),strtojson=visujsonstr(NV))
         vfilelist.append(vfile(t))
@@ -130,8 +139,9 @@ for k, t in enumerate(trange):
 
 
 # save collection to pvd file
-vu.collect_vtu_files(vfilelist, vfileprfx+'.pvd')
-vu.collect_vtu_files(pfilelist, pfileprfx+'.pvd')
+if paraoutput:
+    vu.collect_vtu_files(vfilelist, vfileprfx+'.pvd')
+    vu.collect_vtu_files(pfilelist, pfileprfx+'.pvd')
 
 # write to tikz file
 vu.plot_prs_outp(outsig=poutlist, tmesh=trange, tikzfile=ptikzfile)

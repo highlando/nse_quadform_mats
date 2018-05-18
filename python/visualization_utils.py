@@ -100,37 +100,41 @@ def plot_outp_sig(str_to_json=None, tmeshkey='tmesh', sigkey='outsig',
 
 def writevp_paraview(velvec=None, pvec=None, strtojson=None, visudict=None,
                      vfile='vel__.vtu', pfile='p__.vtu'):
-    if visudict is None:
-        #jsfile = file(strtojson)
-        jsfile = open(strtojson)
-        visudict = json.load(jsfile)
-        vaux = np.zeros((visudict['vdim'], 1))
-        # fill in the boundary values
-        for bcdict in visudict['bclist']:
-            intbcidx = [int(bci) for bci in bcdict.keys()]
-            vaux[intbcidx, 0] = list(bcdict.values())
-        vaux[visudict['invinds']] = velvec
+    try:
+        if visudict is None:
+            #jsfile = file(strtojson)
+            jsfile = open(strtojson)
+            visudict = json.load(jsfile)
+            vaux = np.zeros((visudict['vdim'], 1))
+            # fill in the boundary values
+            for bcdict in visudict['bclist']:
+                intbcidx = [int(bci) for bci in bcdict.keys()]
+                vaux[intbcidx, 0] = list(bcdict.values())
+            vaux[visudict['invinds']] = velvec
 
-    vxvtxdofs = visudict['vxvtxdofs']
-    vyvtxdofs = visudict['vyvtxdofs']
+        vxvtxdofs = visudict['vxvtxdofs']
+        vyvtxdofs = visudict['vyvtxdofs']
 
-    #velfile = file(vfile, 'w')
-    velfile = open(vfile, 'w')
-    velfile.write(visudict['vtuheader_v'])
-    #for xvtx, yvtx in itertools.izip(vxvtxdofs, vyvtxdofs):
-    for xvtx, yvtx in zip(vxvtxdofs, vyvtxdofs):
-        #print(u'{0} {1} {2} '.format(vaux[xvtx][0], vaux[yvtx][0], 0.))
-        velfile.write(u'{0} {1} {2} '.format(vaux[xvtx][0], vaux[yvtx][0], 0.))
-    velfile.write(visudict['vtufooter_v'])
+        #velfile = file(vfile, 'w')
+        velfile = open(vfile, 'w')
+        velfile.write(visudict['vtuheader_v'])
+        #for xvtx, yvtx in itertools.izip(vxvtxdofs, vyvtxdofs):
+        for xvtx, yvtx in zip(vxvtxdofs, vyvtxdofs):
+            #print(u'{0} {1} {2} '.format(vaux[xvtx][0], vaux[yvtx][0], 0.))
+            velfile.write(u'{0} {1} {2} '.format(vaux[xvtx][0], vaux[yvtx][0], 0.))
+        velfile.write(visudict['vtufooter_v'])
 
-    if pvec is not None:
-        pvtxdofs = visudict['pvtxdofs']
-        #pfile = file(pfile, 'w')
-        pfile = open(pfile, 'w')
-        pfile.write(visudict['vtuheader_p'])
-        for pval in pvec[pvtxdofs, 0]:
-            pfile.write(u'{0} '.format(pval))
-        pfile.write(visudict['vtufooter_p'])
+        if pvec is not None:
+            pvtxdofs = visudict['pvtxdofs']
+            #pfile = file(pfile, 'w')
+            pfile = open(pfile, 'w')
+            pfile.write(visudict['vtuheader_p'])
+            for pval in pvec[pvtxdofs, 0]:
+                pfile.write(u'{0} '.format(pval))
+            pfile.write(visudict['vtufooter_p'])
+    except FileNotFoundError:
+        print('no files found for paraview visualization -- pass')
+        return
 
 
 def collect_vtu_files(filelist, pvdfilestr):

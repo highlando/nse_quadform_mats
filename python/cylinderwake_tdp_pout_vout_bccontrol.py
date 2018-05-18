@@ -6,15 +6,23 @@ import conv_tensor_utils as ctu
 import visualization_utils as vu
 import sys, getopt, os
 
+scheme = 'CR'
+scheme = 'TH'
+
 # hard coded paths and dictionary for data
-NVdict          = {1: 5824, 2: 9384,  3: 19512}
-savedmatsstr    = lambda NV: '../data/cylinderwake__mats_NV{1}_Re{0}_bccontrol_palpha{2}.mat'.format(1,NV,1)
-visujsonstr     = lambda NV : '../data/visualization_cylinderwake_NV{0}.jsn'.format(NV)
+if scheme == 'TH':
+    NVdict          = {0: 3026, 1: 5824, 2: 9384,  3: 19512}
+    savedmatsstr    = lambda NV: '../data/cylinderwake_TH__mats_NV{1}_Re{0}_bccontrol_palpha{2}.mat'.format(1,NV,1)
+    visujsonstr     = lambda NV : '../data/visualization_cylinderwake_NV{0}.jsn'.format(NV)
+elif scheme == 'CR':
+    NVdict          = {0: 2276}
+    savedmatsstr    = lambda NV: '../data/cylinderwake_CR__mats_NV{1}_Re{0}_bccontrol_palpha{2}.mat'.format(1,NV,1)
+    visujsonstr     = lambda NV : '../data/visualization_cylinderwake_NV{0}.jsn'.format(NV)
 
 
 # setup parameters
-N           = 1
-Re          = 40
+N           = 2
+Re          = 10
 npicardstps = 5
 palpha      = 1e-3
 omeg        = 3.  # parameter for the frequency of the input signal
