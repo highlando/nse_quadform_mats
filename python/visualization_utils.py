@@ -132,7 +132,7 @@ def writevp_paraview(velvec=None, pvec=None, strtojson=None, visudict=None,
             for pval in pvec[pvtxdofs, 0]:
                 pfile.write(u'{0} '.format(pval))
             pfile.write(visudict['vtufooter_p'])
-    except FileNotFoundError:
+    except:
         print('no files found for paraview visualization -- pass')
         return
 

@@ -419,19 +419,21 @@ if __name__ == '__main__':
     #                 visu=visu)
     # comp_exp_nsbili(problemname='cylinderwake', N=0, mddir=mddir, Re=40,
     #                 visu=visu)
-    # comp_exp_nsbili(problemname='cylinderwake', scheme='CR',
-    #                 N=0, mddir=mddir, visu=False)
-    # comp_exp_nsbili(problemname='cylinderwake', scheme='CR',
-    #                 N=0, mddir=mddir, bccontrol=True, visu=False)
-    # comp_exp_nsbili(problemname='cylinderwake', scheme='TH',
-    #                 N=0, mddir=mddir, bccontrol=True, visu=False)
-    # comp_exp_nsbili(problemname='cylinderwake', scheme='TH',
-    #                 N=0, mddir=mddir, visu=False)
+    comp_exp_nsbili(problemname='cylinderwake', scheme='CR',
+                    N=0, mddir=mddir, visu=False)
+    comp_exp_nsbili(problemname='cylinderwake', scheme='CR',
+                    N=0, mddir=mddir, bccontrol=True, visu=False)
+    comp_exp_nsbili(problemname='cylinderwake', scheme='TH',
+                    N=0, mddir=mddir, bccontrol=True, visu=False)
+    comp_exp_nsbili(problemname='cylinderwake', scheme='TH',
+                    N=0, mddir=mddir, visu=False)
     # comp_exp_nsbili(problemname='cylinderwake', N=1, mddir=mddir, visu=visu)
     # comp_exp_nsbili(problemname='cylinderwake', N=2, mddir=mddir, visu=visu)
     # comp_exp_nsbili(problemname='cylinderwake', N=3, mddir=mddir, visu=visu)
-    comp_exp_nsbili(problemname='cylinderwake', N=2,
-                    mddir=mddir, bccontrol=True, palpha=1, visu=False)
+    # comp_exp_nsbili(problemname='cylinderwake', N=1,
+    #                 mddir=mddir, bccontrol=True, palpha=1, visu=False)
+    # comp_exp_nsbili(problemname='cylinderwake', N=2,
+    #                 mddir=mddir, bccontrol=True, palpha=1, visu=False)
     # comp_exp_nsbili(problemname='cylinderwake', N=2,
     #                 mddir=mddir, bccontrol=True, palpha=1, visu=visu)
     # comp_exp_nsbili(problemname='cylinderwake', N=3, compressdata=True,

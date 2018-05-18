@@ -6,8 +6,8 @@ import conv_tensor_utils as ctu
 import visualization_utils as vu
 import sys, getopt, os
 
-scheme = 'CR'
 scheme = 'TH'
+scheme = 'CR'
 
 # hard coded paths and dictionary for data
 if scheme == 'TH':
@@ -22,7 +22,7 @@ elif scheme == 'CR':
 
 # setup parameters
 N           = 2
-Re          = 10
+Re          = 40
 npicardstps = 5
 palpha      = 1e-3
 omeg        = 3.  # parameter for the frequency of the input signal
